@@ -1,0 +1,10 @@
+package cli;
+
+public enum Mode {
+    INSERT_CAKE,
+    INSERT_HERSTELLER,
+    DISPLAY_HERSTELLER,
+    DISPLAY_CAKE,
+    DELETE_CAKE,
+    UPDATE_INSPECTDATE
+}
