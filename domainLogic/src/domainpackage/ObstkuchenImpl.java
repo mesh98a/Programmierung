@@ -25,7 +25,7 @@ public class ObstkuchenImpl extends AbstractCake implements Obstkuchen {
 
     @Override
     public KuchenTyp getKuchenTyp() {
-        return KuchenTyp.OBST;
+        return KuchenTyp.OBSTKUCHEN;
     }
 }
 

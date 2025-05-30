@@ -9,9 +9,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="contract" />
-    <orderEntry type="module" module-name="domainLogic" />
     <orderEntry type="module" module-name="io" />
     <orderEntry type="module" module-name="net" />
-    <orderEntry type="module" module-name="api" />
+    <orderEntry type="module" module-name="observerpattern" />
+    <orderEntry type="module" module-name="events" />
+    <orderEntry type="module" module-name="eventsimpl" />
+    <orderEntry type="module" module-name="domainLogic" />
   </component>
 </module>

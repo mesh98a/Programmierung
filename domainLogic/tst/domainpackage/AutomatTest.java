@@ -77,7 +77,7 @@ class AutomatTest {
         assertEquals(1, kuchenListe.size());
     }
     @Test
-    void filterCake() {
+    void testFilterCake() {
         Automat aut = new Automat(4);
         aut.insertHersteller(hersteller.getName());
         AbstractCake schokokuchen = new KremkuchenImpl(hersteller, Arrays.asList(Allergen.Haselnuss), 350, Duration.ofDays(5), new BigDecimal("12.00"),  "Schokolade");
@@ -86,7 +86,7 @@ class AutomatTest {
         aut.insertCake(zitronenkuchen);
         aut.insertCake(apfelkuchen);
 
-        KuchenTyp typ = KuchenTyp.OBST;
+        KuchenTyp typ = KuchenTyp.OBSTKUCHEN;
 
         List<AbstractCake> kuchenListe = aut.displayListCake(typ);
 
@@ -138,11 +138,8 @@ class AutomatTest {
         aut.insertHersteller(hersteller.getName());
         aut.insertCake(apfelkuchen);
         int id = 0;
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(2025, Calendar.MARCH, 15);
         //
-        boolean result = aut.inspectCake(id, cal.getTime());
+        boolean result = aut.inspectCake(id);
         //
         assertTrue(result);
     }
@@ -154,11 +151,8 @@ class AutomatTest {
         aut.insertHersteller(hersteller.getName());
         aut.insertCake(apfelkuchen);
         int fachnummer = 1;
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(2025, Calendar.MARCH, 15);
         //
-        boolean result = aut.inspectCake(fachnummer, cal.getTime());
+        boolean result = aut.inspectCake(fachnummer);
         //
         assertFalse(result);
     }
@@ -218,6 +212,16 @@ class AutomatTest {
         Map<Hersteller,Integer> herstellerMap = aut.getHerstellerMap();
 
         assertTrue(result);
+
+    }
+    @Test
+    void deleteMapHersteller(){
+        Automat aut = new Automat(4);
+        aut.insertHersteller(hersteller.getName());
+
+        boolean result = aut.deleteHersteller(hersteller.getName());
+        Map<Hersteller,Integer> herstellerMap = aut.getHerstellerMap();
+
         assertEquals(0,herstellerMap.size());
 
     }
@@ -266,7 +270,7 @@ class AutomatTest {
 
     }
     @Test
-    void getAllergenIsEmpty(){
+    void testGetAllergenIsEmpty(){
         Automat aut = new Automat(4);
         aut.insertHersteller(hersteller.getName());
         AbstractCake schokokuchen = new KremkuchenImpl(hersteller, Arrays.asList(), 350, Duration.ofDays(5), new BigDecimal("12.00"), "Schokolade");
@@ -279,7 +283,7 @@ class AutomatTest {
     }
 
     @Test
-    void getCapacity(){
+    void testGetCapacity(){
         Automat aut = new Automat(10);
         aut.insertHersteller(hersteller.getName());
         aut.insertCake(apfelkuchen);
@@ -289,6 +293,32 @@ class AutomatTest {
 
         assertEquals(capacity,result);
 
+    }
+    @Test
+    void testGetKeineAllergen(){
+        Automat aut = new Automat(1);
+        Set<Allergen> allAllergene = EnumSet.allOf(Allergen.class);
+
+        Set<Allergen> result = aut.displaykeineAllergen();
+
+        assertEquals(allAllergene,result);
+    }
+    @Test
+    void testGetKeineAllergenOhneGluten(){
+        Automat aut = new Automat(1);
+        aut.insertHersteller(hersteller.getName());
+        ObstkuchenImpl obstkuchen = mock(ObstkuchenImpl.class);
+        when(obstkuchen.getHersteller()).thenReturn(hersteller);
+        when(obstkuchen.getAllergene()).thenReturn(Arrays.asList(Allergen.Gluten));
+        when(obstkuchen.getNaehrwert()).thenReturn(100);
+        when(obstkuchen.getHaltbarkeit()).thenReturn(Duration.ofDays(3));
+        when(obstkuchen.getPreis()).thenReturn(new BigDecimal("10.00"));
+        when(obstkuchen.getObstsorte()).thenReturn("Apfel");
+        aut.insertCake(obstkuchen);
+
+        Set<Allergen> result = aut.displaykeineAllergen();
+
+        assertFalse(result.contains(Allergen.Gluten));
     }
 
 //    @Test

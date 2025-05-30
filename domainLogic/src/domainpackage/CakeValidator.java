@@ -35,9 +35,9 @@ public class CakeValidator {
         if (cake.getPreis().compareTo(BigDecimal.ZERO) <= 0) {
             return ErrorCake.TOO_SMALL;
         }
-        if (cake.getPreis().scale() > 2) {
-            return ErrorCake.TOO_MANY_DECIMALS;
-        }
+//        if (cake.getPreis().scale() > 2) {
+//            return ErrorCake.TOO_MANY_DECIMALS;
+//        }
 
         if (cake instanceof Obstkuchen) {
             Obstkuchen ok = (Obstkuchen) cake;

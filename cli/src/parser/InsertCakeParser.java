@@ -12,13 +12,14 @@ import java.util.HashSet;
 public class InsertCakeParser {
     public final AbstractCake cake;
 
-    public InsertCakeParser(String input) {
+    public InsertCakeParser(String[] input) {
         this.cake = parseCakeFromLine(input);
     }
 
-    private AbstractCake parseCakeFromLine(String input) {
+    private AbstractCake parseCakeFromLine(String[] parts) {
         try {
-            String[] parts = input.split(" ");
+//            String[] parts = input.split(" ");
+
 
             String type = parts[0];
             String herstellerName = parts[1];
@@ -43,7 +44,13 @@ public class InsertCakeParser {
             } else if (type.equalsIgnoreCase("Kremkuchen")) {
                 String kremsorte = parts[6];
                 return new KremkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, kremsorte);
-            } else {
+            } else if (type.equalsIgnoreCase("Obsttorte")) {
+                String obstsorte = parts[6];
+                String kremsorte = parts[7];
+                return new ObsttorteImpl(hersteller, allergene, naehrwert, haltbarkeit, preis,obstsorte, kremsorte);
+            }
+
+            else {
                 System.out.println("Unbekannter Kuchentyp: " + type);
                 return null;
             }

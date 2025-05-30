@@ -1,27 +1,33 @@
 package domainpackage;
 
 import kuchen.Allergen;
+import observerpattern.Beobachter;
+import observerpattern.Subjekt;
 import verwaltung.Hersteller;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Automat {
+public class Automat implements Subjekt {
     private AbstractCake[] cakes;
     private int capacity;
     private Map<Hersteller, Integer> herstellerMap;
     private Set<Allergen> allergen;
+    private List<Beobachter> observers;
+    private Aktion letzteAktion;
+    private Thread letzterThread;
 
     public Automat(int capacity) {
         this.capacity = capacity;
         this.cakes = new AbstractCake[capacity];
         this.herstellerMap = new HashMap<Hersteller, Integer>();
         this.allergen = new HashSet<Allergen>();
+        this.observers = new ArrayList<>();
     }
 
 
-    public boolean insertCake(AbstractCake cake) {
+    public synchronized boolean insertCake(AbstractCake cake) {
         // https://schmidtdennis.hashnode.dev/validator-design-pattern
         ErrorCake error = CakeValidator.validate(cake);
         if (error != null) {
@@ -44,6 +50,9 @@ public class Automat {
 
                 this.allergen.addAll(cake.getAllergene());
 
+                this.letzteAktion = Aktion.EINFUEGEN;
+                notifyObservers();
+
                 return true;
             }
         }
@@ -52,7 +61,7 @@ public class Automat {
     }
 
 
-    public List<AbstractCake> displayListCake() {
+    public synchronized List<AbstractCake> displayListCake() {
         List<AbstractCake> cakeList = new ArrayList<>();
         for (AbstractCake cake : cakes) {
             if (cake != null) {
@@ -62,7 +71,7 @@ public class Automat {
         return cakeList;
     }
 
-    public List<AbstractCake> displayListCake(KuchenTyp typ) {
+    public synchronized List<AbstractCake> displayListCake(KuchenTyp typ) {
         List<AbstractCake> filterCakeList = Arrays.stream(this.cakes)
                 .filter(Objects::nonNull) // https://beginnersbook.com/2017/10/java-8-filter-null-values-from-a-stream/
                 .filter(k -> k.getKuchenTyp() == typ)
@@ -71,12 +80,20 @@ public class Automat {
         return filterCakeList;
     }
 
-    public Set<Allergen> displayAllergen() {
+    public synchronized Set<Allergen> displayAllergen() {
         return new HashSet<>(this.allergen);
+    }
+    public synchronized Set<Allergen> displaykeineAllergen() {
+        Set<Allergen> allergene = new HashSet<>(this.allergen);
+        Set<Allergen> allAllergene = EnumSet.allOf(Allergen.class);
+
+        Set<Allergen> keineAllergene = new HashSet<>(allAllergene);
+        keineAllergene.removeAll(allergene);
+        return keineAllergene;
     }
 
 
-    public boolean deleteCake(int id) {
+    public synchronized boolean deleteCake(int id) {
         if (id < 0 || id >= cakes.length) {
             return false;
         }
@@ -84,10 +101,12 @@ public class Automat {
             return false;
         }
         cakes[id] = null;
+        this.letzteAktion = Aktion.LOESCHEN;
+        notifyObservers();
         return true;
     }
 
-    public boolean inspectCake(int id, Date date) {
+    public synchronized boolean inspectCake(int id) {
         if (id < 0 || id >= cakes.length) {
             return false;
         }
@@ -95,11 +114,13 @@ public class Automat {
             return false;
         }
 
-        cakes[id].setInspektionsdatum(date);
+        cakes[id].setInspektionsdatum(new Date());
+        this.letzteAktion = Aktion.INSPEKTION;
+        notifyObservers();
         return true;
     }
 
-    public boolean insertHersteller(String herstellerName) {
+    public synchronized boolean insertHersteller(String herstellerName) {
         Hersteller hersteller = new HerstellerImpl(herstellerName);
         if (this.herstellerMap.containsKey(hersteller)) {
             return false;
@@ -108,11 +129,11 @@ public class Automat {
         return true;
     }
 
-    public Map<Hersteller, Integer> getHerstellerMap() {
+    public synchronized Map<Hersteller, Integer> getHerstellerMap() {
         return new HashMap<>(this.herstellerMap);
     }
 
-    public boolean deleteHersteller(String herstellerName) {
+    public synchronized boolean deleteHersteller(String herstellerName) {
         Hersteller toRemove = new HerstellerImpl(herstellerName);
         if (this.herstellerMap.containsKey(toRemove)) {
             this.herstellerMap.remove(toRemove);
@@ -121,15 +142,39 @@ public class Automat {
         return true;
     }
 
-    public int getFreeCapacity() {
+    public synchronized int getFreeCapacity() {
         int counter = 0;
         for (AbstractCake cake : cakes) {
             if (cake != null) {
                 counter++;
             }
         }
-        int free = this.capacity - counter;
 
-        return free;
+        return this.capacity - counter;
+    }
+
+    @Override
+    public void registerObserver(Beobachter o) {
+        this.observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Beobachter o) {
+        this.observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        this.letzterThread = Thread.currentThread();
+        for (Beobachter o : observers) {
+            o.update();
+        }
+    }
+
+    public synchronized Aktion getLetzteAktion() {
+        return this.letzteAktion;
+    }
+    public synchronized Thread getLetzterThread() {
+        return this.letzterThread;
     }
 }

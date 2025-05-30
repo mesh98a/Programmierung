@@ -15,7 +15,6 @@ import java.util.*;
 
 // https://link.springer.com/book/10.1007/978-3-662-66582-4
 public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
-    //protected final Clock clock;
     protected Hersteller hersteller;
     protected Collection<Allergen> allergene;
     protected int naehrwert;
@@ -32,8 +31,6 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
         this.preis = preis;
-        //this.inspektionsdatum = inspektionsdatum;
-        //this.insertionDate = Date.from(clock.instant());
 
     }
     public abstract KuchenTyp getKuchenTyp();
@@ -78,15 +75,15 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         return this.getInsertionDate();
     }
 
-    public void setInspektionsdatum(Date inspektionsdatum) {
+    void setInspektionsdatum(Date inspektionsdatum) {
         this.inspektionsdatum = inspektionsdatum;
     }
 
-    protected void setFachnummer(int fachnummer) {
+    void setFachnummer(int fachnummer) {
         this.fachnummer = fachnummer;
     }
 
-    protected void setEinfuegedatum(LocalDateTime date){
+    void setEinfuegedatum(LocalDateTime date){
         this.einfuegedatum = date;
     }
 

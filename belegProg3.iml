@@ -14,6 +14,9 @@
     <orderEntry type="module" module-name="io" />
     <orderEntry type="module" module-name="net" />
     <orderEntry type="module" module-name="sim" />
-    <orderEntry type="module" module-name="api" />
+    <orderEntry type="module" module-name="listeners" />
+    <orderEntry type="module" module-name="observerpattern" />
+    <orderEntry type="module" module-name="events" />
+    <orderEntry type="module" module-name="eventsimpl" />
   </component>
 </module>

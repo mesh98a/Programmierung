@@ -17,7 +17,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] geforderte main-Methoden nur im default package des module belegProg3
   - [ ] CLI
   - [ ] alternatives CLI
-  - [ ] je eine für jede Simulation
+  - [ ] je eine für jede simulation1.Simulation
   - [ ] GUI
   - [ ] Server
 
@@ -52,7 +52,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] **CRUD** (2)
 - [ ] **CLI** (2)
   * Syntax gemäß Anforderungen
-- [ ] **Simulation** (2)
+- [ ] **simulation1.Simulation** (2)
   * ohne race conditions
 - [ ] **GUI** (2)
 - [ ] **I/O** (2)
@@ -66,10 +66,10 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] alternatives CLI (1)
   * _angeben welche Funktionalität im alternativen CLI deaktiviert_
 - [ ] ausdifferenziertes event-System mit mindestens 3 eventsystem (2)
-- [ ] observer (2)
+- [ ] observerpattern (2)
 - [ ] bzgl. den Anforderungen angemessene Typen der collections (2)
-- [ ] Simulation 2 (1)
-- [ ] Simulation 3 (1)
+- [ ] simulation1.Simulation 2 (1)
+- [ ] simulation1.Simulation 3 (1)
 - [ ] skalierbare GUI (1)
 - [ ] vollständige GUI (1)
 - [ ] FXML verwendet (1)

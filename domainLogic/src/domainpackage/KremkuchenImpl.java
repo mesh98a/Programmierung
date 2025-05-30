@@ -26,6 +26,6 @@ public class KremkuchenImpl extends AbstractCake implements Kremkuchen {
 
     @Override
     public KuchenTyp getKuchenTyp() {
-        return KuchenTyp.KREM;
+        return KuchenTyp.KREMKUCHEN;
     }
 }

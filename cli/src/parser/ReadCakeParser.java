@@ -3,10 +3,15 @@ package parser;
 import domainpackage.KuchenTyp;
 
 public class ReadCakeParser {
-    public final KuchenTyp filterTyp;
+    public KuchenTyp filterTyp;
 
     public ReadCakeParser(String filterTyp) {
-        this.filterTyp = KuchenTyp.valueOf(filterTyp.toUpperCase());
+        try {
+            this.filterTyp = KuchenTyp.valueOf(filterTyp.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ungültiger KuchenTyp: " + filterTyp + " Anzeige erfolgt ohne Filter.");
+            this.filterTyp = null;
+        }
     }
 
 

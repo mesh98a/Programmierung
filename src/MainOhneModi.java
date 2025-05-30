@@ -1,13 +1,12 @@
 
 import cli.ConsoleOhneModi;
 import cli.Mode;
-import events.eventsystem.automatsystem.AutomatEventHandler;
-import events.eventsystem.clisystem.CliEventHandler;
-import events.listeners.automat.*;
-import events.listeners.cli.DisplayCakeResponseListener;
-import events.listeners.cli.HerstellerMapResponseListener;
-import observerpattern.observerimpl.AutomatObserver;
-import observerpattern.observerimpl.ObservableAutomat;
+import domainpackage.Automat;
+import eventsystem.automatsystem.AutomatEventHandler;
+import eventsystem.clisystem.CliEventHandler;
+import cli.AutomatObserver;
+import listeners.automat.*;
+import listeners.cli.*;
 
 public class MainOhneModi {
     /* Enter command (:c = insert, :r = read, :d = delete, :u = update)
@@ -30,7 +29,7 @@ Fachnummer: 1 Die verbleibende Haltbarkeit : 14352
 Fachnummer: 1 Die verbleibende Haltbarkeit : 14330*/
 
     public static void main(String[] args) {
-        ObservableAutomat automat = new ObservableAutomat(3);
+        Automat automat = new Automat(3);
         ConsoleOhneModi cli = new ConsoleOhneModi();
 
         AutomatObserver observer = new AutomatObserver(automat);

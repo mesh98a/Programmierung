@@ -1,8 +1,8 @@
 package cli;
 
-import events.eventsimpl.automatevent.*;
-import events.eventsystem.automatsystem.AutomatEvent;
-import events.eventsystem.automatsystem.AutomatEventHandler;
+import eventsimpl.automatevent.*;
+import eventsystem.automatsystem.AutomatEvent;
+import eventsystem.automatsystem.AutomatEventHandler;
 import parser.*;
 
 import java.util.EnumMap;
@@ -40,7 +40,7 @@ public class Console {
                     case ":u":
                         System.out.println("Fachnummer des Kuchens und das Datum im yyyy-mm-dd Format:");
                         UpdateParser u = new UpdateParser(scanner.nextLine());
-                        AutomatEvent uevent = new InspectCakeEvent(u.fachnummer, u.inspectdate);
+                        AutomatEvent uevent = new InspectCakeEvent(u.fachnummer);
                         AutomatEventHandler inspectCakeHandler = handlers.get(Mode.UPDATE_INSPECTDATE);
                         if (null != inspectCakeHandler) inspectCakeHandler.handle(uevent);
                         break;
@@ -53,31 +53,30 @@ public class Console {
             }
         }
     }
-    private void handleInsert() {
-        System.out.println("Was möchtest du einfügen? (:h hersteller / :k kuchen)");
-        String command = scanner.nextLine().trim();
 
-        switch (command) {
-            case ":h":
-                System.out.println("Herstellername:");
-                InsertHerstellerParser h = new InsertHerstellerParser(scanner.nextLine());
-                AutomatEvent hevent = new InsertHerstellerEvent( h.herstellerName);
-                AutomatEventHandler herstellerHandler = handlers.get(Mode.INSERT_HERSTELLER);
-                if (null != herstellerHandler) herstellerHandler.handle(hevent);
-                break;
-            case ":k":
-                System.out.println("Kuchen:");
-                InsertCakeParser k = new InsertCakeParser(scanner.nextLine());
-                AutomatEvent kevent = new InsertCakeEvent(k.cake);
-                AutomatEventHandler insertCakeHandler = handlers.get(Mode.INSERT_CAKE);
-                if (null != insertCakeHandler) insertCakeHandler.handle(kevent);
-                break;
-            default:
-                System.out.println("Unbekannter Einfügebefehl.");
+    private void handleInsert() {
+        System.out.println("Hersteller oder Kuchen einfügen?");
+        String command = scanner.nextLine().trim();
+        String[] parts = command.split(" ");
+
+        if (parts.length == 1) {
+            InsertHerstellerParser h = new InsertHerstellerParser(parts[0]);
+            AutomatEvent hevent = new InsertHerstellerEvent(h.herstellerName);
+            AutomatEventHandler herstellerHandler = handlers.get(Mode.INSERT_HERSTELLER);
+            if (null != herstellerHandler) herstellerHandler.handle(hevent);
+        } else if (parts.length == 6 || parts.length == 7) {
+            InsertCakeParser k = new InsertCakeParser(parts);
+            AutomatEvent kevent = new InsertCakeEvent(k.cake);
+            AutomatEventHandler insertCakeHandler = handlers.get(Mode.INSERT_CAKE);
+            if (null != insertCakeHandler) insertCakeHandler.handle(kevent);
+        } else {
+            System.out.println("Fehler: Ungültige Anzahl an Tokens (" + parts.length + ")");
         }
+
     }
-    private void handleRead(){
-        System.out.println("Was möchtest du ansehen? (:h hersteller / :k kuchen)");
+
+    private void handleRead() {
+        System.out.println("Was möchtest du ansehen? (:h hersteller / :k kuchen / :a  allergen)");
         String command = scanner.nextLine().trim();
 
         switch (command) {
@@ -94,14 +93,33 @@ public class Console {
                 AutomatEventHandler displayCakeHandler = handlers.get(Mode.DISPLAY_CAKE);
                 if (null != displayCakeHandler) displayCakeHandler.handle(rkevent);
                 break;
+            case ":a":
+                System.out.println("enthalten(i)/nicht enthalten(e): ");
+                String vorhanden = scanner.nextLine();
+
+                AutomatEvent raevent;
+                if ("i".equalsIgnoreCase(vorhanden)) {
+                    raevent = new DisplayAllergenEvent();
+                    AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_ALLERGEN);
+                    if (displayAllergenHandler != null) {
+                        displayAllergenHandler.handle(raevent);
+                    }
+                } else if ("e".equalsIgnoreCase(vorhanden)) {
+                    raevent = new DisplayKeineAllergenEvent();
+                    AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_KEINE_ALLERGEN);
+                    if (displayAllergenHandler != null) {
+                        displayAllergenHandler.handle(raevent);
+                    }
+                } else {
+                    System.out.println("Ungültige Eingabe. Bitte 'i' oder 'e' eingeben.");
+                    break;
+                }
+                break;
             default:
                 System.out.println("Unbekannter Einfügebefehl.");
         }
 
     }
-
-
-
 
 
 }

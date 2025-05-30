@@ -1,8 +1,8 @@
 package cli;
 
-import events.eventsimpl.automatevent.*;
-import events.eventsystem.automatsystem.AutomatEvent;
-import events.eventsystem.automatsystem.AutomatEventHandler;
+import eventsimpl.automatevent.*;
+import eventsystem.automatsystem.AutomatEvent;
+import eventsystem.automatsystem.AutomatEventHandler;
 import parser.*;
 
 import java.util.*;
@@ -54,12 +54,12 @@ public class ConsoleOhneModi {
         if (null != herstellerHandler) herstellerHandler.handle(hevent);
 
         // Kuchen einfügen
-        String[] cakeArgs = Arrays.copyOfRange(args, 1, args.length);
-        String joined = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        InsertCakeParser k = new InsertCakeParser(joined);
-        AutomatEvent kevent = new InsertCakeEvent(k.cake);
-        AutomatEventHandler insertCakeHandler = handlers.get(Mode.INSERT_CAKE);
-        if (null != insertCakeHandler) insertCakeHandler.handle(kevent);
+//        String[] cakeArgs = Arrays.copyOfRange(args, 1, args.length);
+//        String joined = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+////        InsertCakeParser k = new InsertCakeParser(joined);
+//        AutomatEvent kevent = new InsertCakeEvent(k.cake);
+//        AutomatEventHandler insertCakeHandler = handlers.get(Mode.INSERT_CAKE);
+//        if (null != insertCakeHandler) insertCakeHandler.handle(kevent);
     }
 
     private void handleRead(String[] args) {
@@ -82,7 +82,7 @@ public class ConsoleOhneModi {
         String[] cakeArgs = Arrays.copyOfRange(args, 1, args.length);
         String joined = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         UpdateParser u = new UpdateParser(joined);
-        AutomatEvent uevent = new InspectCakeEvent(u.fachnummer, u.inspectdate);
+        AutomatEvent uevent = new InspectCakeEvent(u.fachnummer);
         AutomatEventHandler inspectCakeHandler = handlers.get(Mode.UPDATE_INSPECTDATE);
         if (null != inspectCakeHandler) inspectCakeHandler.handle(uevent);
     }
