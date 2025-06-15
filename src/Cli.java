@@ -8,12 +8,18 @@ import listeners.cli.DisplayAllergenResponseListener;
 import listeners.cli.DisplayKeineAllergenResponseListener;
 import listeners.cli.HerstellerMapResponseListener;
 import listeners.cli.DisplayCakeResponseListener;
+import observers.AutomatCapacityObserver;
+import observers.AutomatChangesObserver;
 
-public class Main {
+public class Cli {
 
     public static void main(String[] args) {
-        Automat automat = new Automat(2);
+        Automat automat = new Automat(3);
         Console cli = new Console();
+
+        AutomatCapacityObserver capacityObserver = new AutomatCapacityObserver(automat);
+        AutomatChangesObserver changesObserver = new AutomatChangesObserver(automat);
+
 
         AutomatEventHandler insertCakeHandler = new AutomatEventHandler();
         insertCakeHandler.add(new InsertCakeListener(automat));
@@ -45,6 +51,9 @@ public class Main {
         AutomatEventHandler deleteCakeHandler = new AutomatEventHandler();
         deleteCakeHandler.add(new DeleteCakeListener(automat));
 
+        AutomatEventHandler deleteHerstellerHandler = new AutomatEventHandler();
+        deleteHerstellerHandler.add(new DeleteHerstellerListener(automat));
+
         AutomatEventHandler inspectDateHandler = new AutomatEventHandler();
         inspectDateHandler.add(new InspectCakeListener(automat));
 
@@ -56,6 +65,7 @@ public class Main {
         cli.setHandler(Mode.DISPLAY_HERSTELLER, getHerstellerHandler);
         cli.setHandler(Mode.DISPLAY_CAKE, displayCakeHandler);
         cli.setHandler(Mode.DELETE_CAKE, deleteCakeHandler);
+        cli.setHandler(Mode.DELETE_HERSTELLER,deleteHerstellerHandler);
         cli.setHandler(Mode.UPDATE_INSPECTDATE, inspectDateHandler);
         cli.setHandler(Mode.DISPLAY_ALLERGEN,displayAllergenHandler);
         cli.setHandler(Mode.DISPLAY_KEINE_ALLERGEN,displayKeineAllergenHandler);

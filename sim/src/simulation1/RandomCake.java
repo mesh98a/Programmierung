@@ -27,12 +27,12 @@ public class RandomCake {
             String[] obstsorten = {"Apfel", "Kirsche", "Pfirsich", "Erdbeere"};
             String obstsorte = obstsorten[random.nextInt(obstsorten.length)];
 
-            return new ObstkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);
+            return new ObstkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, obstsorte);
         } else {
             String[] cremarten = {"Vanille", "Schoko", "Nougat", "Karamell"};
             String kremArt = cremarten[random.nextInt(cremarten.length)];
 
-            return new KremkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, kremArt);
+            return new KremkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, kremArt);
         }
     }
 

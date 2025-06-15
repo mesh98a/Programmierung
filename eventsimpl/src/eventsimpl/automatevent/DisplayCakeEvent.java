@@ -1,17 +1,15 @@
 package eventsimpl.automatevent;
 
-
-import domainpackage.KuchenTyp;
 import eventsystem.automatsystem.AutomatEvent;
 
 public class DisplayCakeEvent extends AutomatEvent {
-    private final KuchenTyp kuchenTyp;
+    private final String kuchenTyp;
 
-    public DisplayCakeEvent(KuchenTyp typ) {
+    public DisplayCakeEvent(String  typ) {
         this.kuchenTyp = typ;
     }
 
-    public KuchenTyp getKuchenTyp() {
+    public String getKuchenTyp() {
         return this.kuchenTyp;
     }
 }

@@ -52,7 +52,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] **CRUD** (2)
 - [ ] **CLI** (2)
   * Syntax gemäß Anforderungen
-- [ ] **simulation1.Simulation** (2)
+- [ ] **Simulation** (2)
   * ohne race conditions
 - [ ] **GUI** (2)
 - [ ] **I/O** (2)
@@ -68,8 +68,8 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] ausdifferenziertes event-System mit mindestens 3 eventsystem (2)
 - [ ] observerpattern (2)
 - [ ] bzgl. den Anforderungen angemessene Typen der collections (2)
-- [ ] simulation1.Simulation 2 (1)
-- [ ] simulation1.Simulation 3 (1)
+- [ ] Simulation 2 (1)
+- [ ] Simulation 3 (1)
 - [ ] skalierbare GUI (1)
 - [ ] vollständige GUI (1)
 - [ ] FXML verwendet (1)

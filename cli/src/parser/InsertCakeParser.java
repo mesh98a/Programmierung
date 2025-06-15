@@ -1,64 +1,92 @@
 package parser;
 
-import domainpackage.*;
 import kuchen.Allergen;
-import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 public class InsertCakeParser {
-    public final AbstractCake cake;
+    private String kuchentyp;
+    private String herstellerName;
+    private BigDecimal preis;
+    private int naehrwert;
+    private Duration haltbarkeit;
+    private Collection<Allergen> allergene;
+    private List<String> kuchensorten;
 
-    public InsertCakeParser(String[] input) {
-        this.cake = parseCakeFromLine(input);
-    }
+    public boolean parse(String[] parts) {
 
-    private AbstractCake parseCakeFromLine(String[] parts) {
         try {
-//            String[] parts = input.split(" ");
+            kuchentyp = parts[0].trim();
+            herstellerName = parts[1].trim();
+            preis = new BigDecimal(parts[2].trim());
+            naehrwert = Integer.parseInt(parts[3].trim());
+            int haltbarkeitStunden = Integer.parseInt(parts[4].trim());
+            haltbarkeit = Duration.ofHours(haltbarkeitStunden);
 
-
-            String type = parts[0];
-            String herstellerName = parts[1];
-            BigDecimal preis = new BigDecimal(parts[2]);
-            int naehrwert = Integer.parseInt(parts[3]);
-            int haltbarkeitStunden = Integer.parseInt(parts[4]);
-            Duration haltbarkeit = Duration.ofHours(haltbarkeitStunden);
-
-            String allergenString = parts[5];
-            Collection<Allergen> allergene = new HashSet<>();
-            if (!allergenString.equals(",")) {
+            allergene = new HashSet<>();
+            String allergenString = parts[5].trim();
+            if (!allergenString.isEmpty()) {
                 String[] allergenParts = allergenString.split(",");
                 for (String a : allergenParts) {
-                    allergene.add(Allergen.valueOf(a));
+                    allergene.add(Allergen.valueOf(a.trim()));
                 }
             }
-            Hersteller hersteller = new HerstellerImpl(herstellerName);
 
-            if (type.equalsIgnoreCase("Obstkuchen")) {
-                String obstsorte = parts[6];
-                return new ObstkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);
-            } else if (type.equalsIgnoreCase("Kremkuchen")) {
-                String kremsorte = parts[6];
-                return new KremkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, kremsorte);
-            } else if (type.equalsIgnoreCase("Obsttorte")) {
-                String obstsorte = parts[6];
-                String kremsorte = parts[7];
-                return new ObsttorteImpl(hersteller, allergene, naehrwert, haltbarkeit, preis,obstsorte, kremsorte);
-            }
+            kuchensorten = new ArrayList<>();
+            kuchensorten.add(parts[6].trim());
+            if (parts.length > 7) kuchensorten.add(parts[7].trim());
 
-            else {
-                System.out.println("Unbekannter Kuchentyp: " + type);
-                return null;
-            }
-
+            return true;
         } catch (Exception e) {
             System.out.println("Fehler beim Parsen: " + e.getMessage());
-            return null;
+            return false;
         }
     }
+
+
+    public String getKuchentyp() {
+        return kuchentyp;
+    }
+
+    public String getHerstellerName() {
+        return herstellerName;
+    }
+
+    public BigDecimal getPreis() {
+        return preis;
+    }
+
+    public int getNaehrwert() {
+        return naehrwert;
+    }
+
+    public Duration getHaltbarkeit() {
+        return haltbarkeit;
+    }
+
+    public Collection<Allergen> getAllergene() {
+        return allergene;
+    }
+
+    public List<String> getKuchensorten() {
+        return kuchensorten;
+    }
+
+//        if (kuchentyp.equalsIgnoreCase("Obstkuchen")) {
+//            String obstsorte = parts[6];
+//            kuchensorten.add(obstsorte);
+//        } else if (kuchentyp.equalsIgnoreCase("Kremkuchen")) {
+//            String kremsorte = parts[6];
+//            kuchensorten.add(kremsorte);
+//        } else if (kuchentyp.equalsIgnoreCase("Obsttorte")) {
+//            String obstsorte = parts[6];
+//            String kremsorte = parts[7];
+//            kuchensorten.add(obstsorte);
+//            kuchensorten.add(kremsorte);
+//        }
+
+
 }
 

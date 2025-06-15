@@ -15,10 +15,10 @@ public class DeleteCakeListener implements AutomatEventListener<DeleteCakeEvent>
     @Override
     public void onAutomatEvent(DeleteCakeEvent event) {
         boolean result = this.automat.deleteCake(event.getFacnummer());
-//        if (result) {
-//            System.out.println("Kuchen gelöscht");
-//        }else {
-//            System.out.println("Kuchen nicht gelöscht");
-//        }
+        if (result) {
+            System.out.println("Kuchen mit " + event.getFacnummer() + " gelöscht");
+        }else {
+            System.out.println("Kuchen mit " + event.getFacnummer() +  " nicht gelöscht");
+        }
     }
 }

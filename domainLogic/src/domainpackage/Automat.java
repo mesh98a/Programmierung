@@ -29,6 +29,9 @@ public class Automat implements Subjekt {
 
     public synchronized boolean insertCake(AbstractCake cake) {
         // https://schmidtdennis.hashnode.dev/validator-design-pattern
+        if (cake == null) {
+            return false;
+        }
         ErrorCake error = CakeValidator.validate(cake);
         if (error != null) {
             return false;
@@ -83,6 +86,7 @@ public class Automat implements Subjekt {
     public synchronized Set<Allergen> displayAllergen() {
         return new HashSet<>(this.allergen);
     }
+
     public synchronized Set<Allergen> displaykeineAllergen() {
         Set<Allergen> allergene = new HashSet<>(this.allergen);
         Set<Allergen> allAllergene = EnumSet.allOf(Allergen.class);
@@ -97,13 +101,36 @@ public class Automat implements Subjekt {
         if (id < 0 || id >= cakes.length) {
             return false;
         }
-        if (cakes[id] == null) {
+        AbstractCake cakeToRemove = cakes[id];
+        if (cakeToRemove == null) {
             return false;
         }
+        Hersteller hersteller = cakeToRemove.getHersteller();
+        if (this.herstellerMap.containsKey(hersteller)) {
+            int currentCount = herstellerMap.get(hersteller);
+            herstellerMap.put(hersteller, currentCount - 1);
+        }
+
+        Collection<Allergen> allergensToRemove = cakeToRemove.getAllergene();
+        for (Allergen allergen : allergensToRemove) {
+            boolean allergenStillExists = false;
+            for (AbstractCake cake : this.cakes) {
+                if (cake != null && cake != cakeToRemove && cake.getAllergene().contains(allergen)) {
+                    allergenStillExists = true;
+                    break;
+                }
+            }
+
+            if (!allergenStillExists) {
+                this.allergen.remove(allergen);
+            }
+        }
+
         cakes[id] = null;
         this.letzteAktion = Aktion.LOESCHEN;
         notifyObservers();
         return true;
+
     }
 
     public synchronized boolean inspectCake(int id) {
@@ -121,6 +148,9 @@ public class Automat implements Subjekt {
     }
 
     public synchronized boolean insertHersteller(String herstellerName) {
+        if (herstellerName == null || herstellerName.isEmpty()) {
+            return false;
+        }
         Hersteller hersteller = new HerstellerImpl(herstellerName);
         if (this.herstellerMap.containsKey(hersteller)) {
             return false;
@@ -139,7 +169,7 @@ public class Automat implements Subjekt {
             this.herstellerMap.remove(toRemove);
             return true;
         }
-        return true;
+        return false;
     }
 
     public synchronized int getFreeCapacity() {
@@ -174,7 +204,32 @@ public class Automat implements Subjekt {
     public synchronized Aktion getLetzteAktion() {
         return this.letzteAktion;
     }
+
     public synchronized Thread getLetzterThread() {
         return this.letzterThread;
+    }
+
+    public synchronized boolean swapFachnummern(int fachnummer1, int fachnummer2) {
+        try {
+            AbstractCake cake1 = cakes[fachnummer1];
+            AbstractCake cake2 = cakes[fachnummer2];
+
+            if (cake1 == null || cake2 == null) {
+                return false;
+            }
+            int tempFachnummer = -1;
+
+            cake1.setFachnummer(tempFachnummer);
+            cake2.setFachnummer(fachnummer1);
+            cake1.setFachnummer(fachnummer2);
+
+            cakes[fachnummer1] = cake2;
+            cakes[fachnummer2] = cake1;
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

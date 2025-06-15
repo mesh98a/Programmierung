@@ -18,13 +18,17 @@ public class RemoverTask extends Thread {
     @Override
     public void run() {
         while (true) {
-            synchronized (automat) {
-                List<AbstractCake> cakeList = automat.displayListCake();
-                if (!cakeList.isEmpty()) {
-                    AbstractCake cake = cakeList.get(random.nextInt(cakeList.size()));
-                    System.out.println(getName() + ": Versuche Kuchen mit Fachnummer " + cake.getFachnummer() + " zu löschen...");
-                    boolean success = automat.deleteCake(cake.getFachnummer());
-                }
+            extracted();
+        }
+    }
+
+    private void extracted() {
+        synchronized (automat) {
+            List<AbstractCake> cakeList = automat.displayListCake();
+            if (!cakeList.isEmpty()) {
+                AbstractCake cake = cakeList.get(random.nextInt(cakeList.size()));
+                System.out.println(getName() + ": Versuche Kuchen mit Fachnummer " + cake.getFachnummer() + " zu löschen...");
+                boolean success = automat.deleteCake(cake.getFachnummer());
             }
         }
     }

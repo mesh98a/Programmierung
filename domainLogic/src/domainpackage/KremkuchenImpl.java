@@ -12,8 +12,8 @@ public class KremkuchenImpl extends AbstractCake implements Kremkuchen {
 
     private String kremsorte;
 
-    public KremkuchenImpl(Hersteller hersteller, Collection<Allergen> allergene, int naehrwert,
-                          Duration haltbarkeit, BigDecimal preis,
+    public KremkuchenImpl(Hersteller hersteller,BigDecimal preis, int naehrwert,
+                          Duration haltbarkeit,Collection<Allergen> allergene,
                            String kremsorte) {
         super(hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.kremsorte = kremsorte;

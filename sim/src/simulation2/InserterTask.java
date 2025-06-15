@@ -28,14 +28,15 @@ public class InserterTask extends Thread {
     @Override
     public void run() {
         while (true) {
-            extracted();
+            extracted(hersteller,random);
         }
     }
 
-    private void extracted() {
+    public boolean extracted(Hersteller hersteller,Random random) {
         AbstractCake cake = createRandomCake(hersteller, random);
         System.out.println(getName() + ": Versuche Kuchen einzufügen...");
         boolean success = automat.insertCake(cake);
+        return success;
     }
 
     public AbstractCake createRandomCake(Hersteller hersteller,Random random) {
@@ -50,12 +51,12 @@ public class InserterTask extends Thread {
             String[] obstsorten = {"Apfel", "Kirsche", "Pfirsich", "Erdbeere"};
             String obstsorte = obstsorten[random.nextInt(obstsorten.length)];
 
-            return new ObstkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);
+            return new ObstkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, obstsorte);
         } else {
             String[] kremarten = {"Vanille", "Schoko", "Nougat", "Karamell"};
             String kremArt = kremarten[random.nextInt(kremarten.length)];
 
-            return new KremkuchenImpl(hersteller, allergene, naehrwert, haltbarkeit, preis, kremArt);
+            return new KremkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, kremArt);
         }
     }
 

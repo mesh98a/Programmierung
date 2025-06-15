@@ -1,10 +1,19 @@
 package parser;
 
 public class DeleteCakeParser {
-    public final int fachnummer;
+    private int fachnummer;
 
-    public DeleteCakeParser(String fachnummer) {
-        this.fachnummer = Integer.parseInt(fachnummer);
+    public boolean parse(String input) {
+        try {
+            this.fachnummer = Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Input is not an integer");
+            return false;
+        }
+    }
+    public int getFachnummer() {
+        return fachnummer;
     }
 
 

@@ -33,6 +33,7 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         this.preis = preis;
 
     }
+
     public abstract KuchenTyp getKuchenTyp();
 
 

@@ -1,11 +1,11 @@
-package cli;
+package observers;
 
 import domainpackage.Automat;
 import observerpattern.Beobachter;
 
-public class AutomatObserver implements Beobachter {
+public class AutomatCapacityObserver implements Beobachter {
     private Automat observable;
-    public AutomatObserver(Automat observable) {
+    public AutomatCapacityObserver(Automat observable) {
         this.observable = observable;
         observable.registerObserver(this);
     }

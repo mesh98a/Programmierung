@@ -11,8 +11,8 @@ import java.util.Collection;
 public class ObstkuchenImpl extends AbstractCake implements Obstkuchen {
     private String obstsorte;
 
-    public ObstkuchenImpl(Hersteller hersteller, Collection<Allergen> allergene, int naehrwert,
-                          Duration haltbarkeit, BigDecimal preis,
+    public ObstkuchenImpl(Hersteller hersteller,BigDecimal preis, int naehrwert,
+                          Duration haltbarkeit,Collection<Allergen> allergene,
                           String obstsorte) {
         super(hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;

@@ -12,7 +12,8 @@ public class ObsttorteImpl extends AbstractCake implements Obsttorte {
     private String obstsorte;
     private String kremsorte;
 
-    public ObsttorteImpl(Hersteller hersteller, Collection<Allergen> allergene, int naehrwert, Duration haltbarkeit, BigDecimal preis,String obstsorte, String kremsorte) {
+    public ObsttorteImpl(Hersteller hersteller,BigDecimal preis, int naehrwert,
+                         Duration haltbarkeit,Collection<Allergen> allergene,String obstsorte, String kremsorte) {
         super(hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;
         this.kremsorte = kremsorte;

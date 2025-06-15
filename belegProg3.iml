@@ -18,5 +18,7 @@
     <orderEntry type="module" module-name="observerpattern" />
     <orderEntry type="module" module-name="events" />
     <orderEntry type="module" module-name="eventsimpl" />
+    <orderEntry type="module" module-name="observers" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

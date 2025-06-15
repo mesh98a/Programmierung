@@ -1,7 +1,8 @@
-package simulation2;
-
 import domainpackage.*;
 import observerpattern.Beobachter;
+import simulation2.InserterTask;
+import simulation2.RemoverTask;
+import simulation2.Simulation2Observer;
 import verwaltung.Hersteller;
 import java.util.*;
 
