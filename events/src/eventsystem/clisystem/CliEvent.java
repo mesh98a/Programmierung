@@ -1,6 +1,17 @@
 package eventsystem.clisystem;
 
 
-public class CliEvent  {
+import java.util.EventObject;
 
+public class CliEvent extends EventObject {
+
+    /**
+     * Constructs a prototypical Event.
+     *
+     * @param source the object on which the Event initially occurred
+     * @throws IllegalArgumentException if source is null
+     */
+    public CliEvent(Object source) {
+        super(source);
+    }
 }

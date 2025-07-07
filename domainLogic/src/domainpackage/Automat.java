@@ -1,22 +1,26 @@
 package domainpackage;
 
+import domainpackage.dto.*;
 import kuchen.Allergen;
+import kuchen.KuchenTyp;
+import kuchen.Kuchenprodukt;
 import observerpattern.Beobachter;
 import observerpattern.Subjekt;
 import verwaltung.Hersteller;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Automat implements Subjekt {
+public class Automat implements Subjekt, Serializable {
+    static final long serialVersionUID = 1L;
+
     private AbstractCake[] cakes;
     private int capacity;
     private Map<Hersteller, Integer> herstellerMap;
     private Set<Allergen> allergen;
     private List<Beobachter> observers;
-    private Aktion letzteAktion;
-    private Thread letzterThread;
 
     public Automat(int capacity) {
         this.capacity = capacity;
@@ -24,6 +28,10 @@ public class Automat implements Subjekt {
         this.herstellerMap = new HashMap<Hersteller, Integer>();
         this.allergen = new HashSet<Allergen>();
         this.observers = new ArrayList<>();
+    }
+
+    public synchronized int getCapacity() {
+        return this.capacity;
     }
 
 
@@ -53,7 +61,6 @@ public class Automat implements Subjekt {
 
                 this.allergen.addAll(cake.getAllergene());
 
-                this.letzteAktion = Aktion.EINFUEGEN;
                 notifyObservers();
 
                 return true;
@@ -64,8 +71,8 @@ public class Automat implements Subjekt {
     }
 
 
-    public synchronized List<AbstractCake> displayListCake() {
-        List<AbstractCake> cakeList = new ArrayList<>();
+    public synchronized List<Kuchenprodukt> getListCake() {
+        List<Kuchenprodukt> cakeList = new ArrayList<>();
         for (AbstractCake cake : cakes) {
             if (cake != null) {
                 cakeList.add(cake);
@@ -74,8 +81,8 @@ public class Automat implements Subjekt {
         return cakeList;
     }
 
-    public synchronized List<AbstractCake> displayListCake(KuchenTyp typ) {
-        List<AbstractCake> filterCakeList = Arrays.stream(this.cakes)
+    public synchronized List<Kuchenprodukt> getListCake(KuchenTyp typ) {
+        List<Kuchenprodukt> filterCakeList = Arrays.stream(this.cakes)
                 .filter(Objects::nonNull) // https://beginnersbook.com/2017/10/java-8-filter-null-values-from-a-stream/
                 .filter(k -> k.getKuchenTyp() == typ)
                 .collect(Collectors.toList());
@@ -83,7 +90,7 @@ public class Automat implements Subjekt {
         return filterCakeList;
     }
 
-    public synchronized Set<Allergen> displayAllergen() {
+    public synchronized Set<Allergen> getAllergen() {
         return new HashSet<>(this.allergen);
     }
 
@@ -112,22 +119,15 @@ public class Automat implements Subjekt {
         }
 
         Collection<Allergen> allergensToRemove = cakeToRemove.getAllergene();
-        for (Allergen allergen : allergensToRemove) {
-            boolean allergenStillExists = false;
-            for (AbstractCake cake : this.cakes) {
-                if (cake != null && cake != cakeToRemove && cake.getAllergene().contains(allergen)) {
-                    allergenStillExists = true;
-                    break;
-                }
-            }
-
-            if (!allergenStillExists) {
-                this.allergen.remove(allergen);
+        this.allergen.removeAll(allergensToRemove);
+        cakes[id] = null;
+        for (AbstractCake cake : this.cakes) {
+            if (cake != null) {
+                this.allergen.addAll(cake.getAllergene());
+                break;
             }
         }
 
-        cakes[id] = null;
-        this.letzteAktion = Aktion.LOESCHEN;
         notifyObservers();
         return true;
 
@@ -142,7 +142,6 @@ public class Automat implements Subjekt {
         }
 
         cakes[id].setInspektionsdatum(new Date());
-        this.letzteAktion = Aktion.INSPEKTION;
         notifyObservers();
         return true;
     }
@@ -195,41 +194,91 @@ public class Automat implements Subjekt {
 
     @Override
     public void notifyObservers() {
-        this.letzterThread = Thread.currentThread();
         for (Beobachter o : observers) {
             o.update();
         }
     }
 
-    public synchronized Aktion getLetzteAktion() {
-        return this.letzteAktion;
-    }
-
-    public synchronized Thread getLetzterThread() {
-        return this.letzterThread;
-    }
-
     public synchronized boolean swapFachnummern(int fachnummer1, int fachnummer2) {
-        try {
-            AbstractCake cake1 = cakes[fachnummer1];
-            AbstractCake cake2 = cakes[fachnummer2];
+        AbstractCake cake1 = cakes[fachnummer1];
+        AbstractCake cake2 = cakes[fachnummer2];
 
-            if (cake1 == null || cake2 == null) {
-                return false;
-            }
-            int tempFachnummer = -1;
-
-            cake1.setFachnummer(tempFachnummer);
-            cake2.setFachnummer(fachnummer1);
-            cake1.setFachnummer(fachnummer2);
-
-            cakes[fachnummer1] = cake2;
-            cakes[fachnummer2] = cake1;
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (cake1 == null || cake2 == null) {
             return false;
         }
+        int tempFachnummer = -1;
+
+        cake1.setFachnummer(tempFachnummer);
+        cake2.setFachnummer(fachnummer1);
+        cake1.setFachnummer(fachnummer2);
+
+        cakes[fachnummer1] = cake2;
+        cakes[fachnummer2] = cake1;
+
+        return true;
     }
+
+    public void copyFrom(Automat other) {
+        if (other == null) {
+            return;
+        }
+        this.capacity = other.capacity;
+
+        this.cakes = Arrays.copyOf(other.cakes, other.cakes.length);
+
+        this.herstellerMap = new HashMap<>(other.herstellerMap);
+
+        this.allergen = new HashSet<>(other.allergen);
+
+    }
+
+    public synchronized AutomatDTO createDTO() {
+        AutomatDTO dto = new AutomatDTO();
+        dto.setCapacity(this.capacity);
+
+        // Map<Hersteller, Integer> → List<HerstellerStatDTO>
+        List<HerstellerMapDTO> herstellerListe = this.getHerstellerMap().entrySet().stream()
+                .map(entry -> new HerstellerMapDTO(
+                        new HerstellerDTO(entry.getKey().getName()),
+                        entry.getValue()))
+                .collect(Collectors.toList());
+        dto.setHerstellerListe(herstellerListe);
+
+        // Set<Allergen> → List<String>
+        List<String> allergene = this.getAllergen().stream()
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        dto.setAllergene(allergene);
+
+        // AbstractCake[] → List<CakeDTO>
+        List<CakeDTO> cakeDTOs = Arrays.stream(this.cakes)
+                .filter(Objects::nonNull)
+                .map(CakeDTOMapper::toDTO)
+                .collect(Collectors.toList());
+        dto.setCakes(cakeDTOs);
+
+        return dto;
+    }
+
+    public synchronized void restoreFromDTO(AutomatDTO automatDTO) {
+        this.capacity = automatDTO.getCapacity();
+        List<Kuchenprodukt> cakeList = new ArrayList<>();
+        for (CakeDTO cake : automatDTO.getCakes()) {
+            Kuchenprodukt k = CakeDTOMapper.toCake(cake);
+            cakeList.add(k);
+        }
+        this.cakes = cakeList.toArray(new AbstractCake[automatDTO.getCapacity()]);
+
+        this.herstellerMap = new HashMap<>();
+        for (HerstellerMapDTO entry : automatDTO.getHerstellerListe()) {
+            Hersteller hersteller = new HerstellerImpl(entry.getHersteller().getName());
+            this.herstellerMap.put(hersteller, entry.getAnzahl());
+        }
+        this.allergen = new HashSet<>();
+        for (String a : automatDTO.getAllergene()) {
+            this.allergen.add(Allergen.valueOf(a));
+        }
+    }
+
+
 }

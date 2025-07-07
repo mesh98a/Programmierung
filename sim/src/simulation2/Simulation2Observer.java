@@ -1,31 +1,28 @@
 package simulation2;
 
-import domainpackage.Aktion;
 import domainpackage.Automat;
 import observerpattern.Beobachter;
 
 public class Simulation2Observer implements Beobachter {
     private Automat automat;
+    int lastSize;
 
     public Simulation2Observer(Automat automat) {
         this.automat = automat;
+        this.lastSize = 0;
         automat.registerObserver(this);
     }
 
     @Override
     public void update() {
-            Aktion aktion = automat.getLetzteAktion();
+        int cakeSize = automat.getListCake().size();
+        if (cakeSize > lastSize) {
+            System.out.println(" Beobachter: Kuchen eingefügt");
+            lastSize = cakeSize;
+        } else if (cakeSize < lastSize) {
+            System.out.println(" Beobachter: Kuchen gelöscht");
+            lastSize = cakeSize;
+        }
 
-            Thread thread = automat.getLetzterThread();
-
-            System.out.print(thread.getName());
-            switch (aktion) {
-                case EINFUEGEN:
-                    System.out.println(" Beobachter: Kuchen eingefügt");
-                    break;
-                case LOESCHEN:
-                    System.out.println(" Beobachter: Kuchen gelöscht");
-                    break;
-            }
     }
 }

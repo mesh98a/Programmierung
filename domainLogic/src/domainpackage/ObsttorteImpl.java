@@ -1,11 +1,15 @@
 package domainpackage;
 
+import domainpackage.dto.CakeDTO;
 import kuchen.Allergen;
+import kuchen.KuchenTyp;
 import kuchen.Obsttorte;
 import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class ObsttorteImpl extends AbstractCake implements Obsttorte {
@@ -32,5 +36,11 @@ public class ObsttorteImpl extends AbstractCake implements Obsttorte {
     @Override
     public String getObstsorte() {
         return this.obstsorte;
+    }
+
+    @Override
+    protected void fillCommonFields(CakeDTO dto) {
+        super.fillCommonFields(dto);
+        dto.setExtras(new ArrayList<>(Arrays.asList(this.obstsorte, this.kremsorte)));
     }
 }

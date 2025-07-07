@@ -1,6 +1,6 @@
 package commands;
 
-import cli.Mode;
+import eventsimpl.automatevent.Mode;
 import eventsystem.automatsystem.AutomatEventHandler;
 
 import java.util.Map;

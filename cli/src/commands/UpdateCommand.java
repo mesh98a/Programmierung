@@ -1,6 +1,7 @@
 package commands;
 
-import cli.Mode;
+import cli.Console;
+import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.InspectCakeEvent;
 import eventsystem.automatsystem.AutomatEvent;
 import eventsystem.automatsystem.AutomatEventHandler;
@@ -21,7 +22,7 @@ public class UpdateCommand implements Command {
             }
             UpdateParser parser = new UpdateParser();
             if (parser.parse(command)) {
-                AutomatEvent event = new InspectCakeEvent(parser.getFachnummer());
+                AutomatEvent event = new InspectCakeEvent(new Console(),parser.getFachnummer());
                 AutomatEventHandler handler = handlers.get(Mode.UPDATE_INSPECTDATE);
                 if (handler != null) handler.handle(event);
             }

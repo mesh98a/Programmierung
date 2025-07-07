@@ -8,7 +8,8 @@ import java.util.Set;
 public class DisplayAllergenResponseEvent extends CliEvent {
     private final Set<Allergen> allergenSet;
 
-    public DisplayAllergenResponseEvent(Set<Allergen> allergenSet) {
+    public DisplayAllergenResponseEvent(Object source,Set<Allergen> allergenSet) {
+        super(source);
         this.allergenSet = allergenSet;
     }
 

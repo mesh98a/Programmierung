@@ -74,19 +74,6 @@ public class InsertCakeParser {
         return kuchensorten;
     }
 
-//        if (kuchentyp.equalsIgnoreCase("Obstkuchen")) {
-//            String obstsorte = parts[6];
-//            kuchensorten.add(obstsorte);
-//        } else if (kuchentyp.equalsIgnoreCase("Kremkuchen")) {
-//            String kremsorte = parts[6];
-//            kuchensorten.add(kremsorte);
-//        } else if (kuchentyp.equalsIgnoreCase("Obsttorte")) {
-//            String obstsorte = parts[6];
-//            String kremsorte = parts[7];
-//            kuchensorten.add(obstsorte);
-//            kuchensorten.add(kremsorte);
-//        }
-
 
 }
 

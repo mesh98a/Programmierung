@@ -19,7 +19,7 @@ public class AutomatChangesObserver implements Beobachter {
 
     @Override
     public void update() {
-        Set<Allergen> aktuelleAllergene = new HashSet<>(observable.displayAllergen());
+        Set<Allergen> aktuelleAllergene = new HashSet<>(observable.getAllergen());
 
         if (!aktuelleAllergene.equals(letzteAllergene)) {
             System.out.println("Hinweis: Die Allergene haben sich geändert.");

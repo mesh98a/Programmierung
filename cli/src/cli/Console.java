@@ -1,6 +1,7 @@
 package cli;
 
 import commands.*;
+import eventsimpl.automatevent.Mode;
 import eventsystem.automatsystem.AutomatEventHandler;
 
 import java.util.EnumMap;
@@ -18,6 +19,7 @@ public class Console {
         commandMap.put(":r", new ReadCommand());
         commandMap.put(":d", new DeleteCommand());
         commandMap.put(":u", new UpdateCommand());
+        commandMap.put(":p", new PersistenceCommand());
         commandMap.put(":x", new ExitCommand());
     }
 
@@ -28,16 +30,16 @@ public class Console {
     public void execute() {
         Scanner s = new Scanner(System.in);
         this.scanner = s;
-            while (true) {
-                System.out.println("Enter command (:c = insert, :r = read, :d = delete, :u = update, :x = exit): ");
-                String input = s.nextLine().trim();
-                Command command = commandMap.get(input);
-                if (command != null) {
-                    command.execute(scanner, handlers);
-                } else {
-                    System.out.println("Ungültiger Befehl: " + input);
-                }
+        while (true) {
+            System.out.println("Enter command (:c = insert, :r = read, :d = delete, :u = update,:p = persistence, :x = exit): ");
+            String input = s.nextLine().trim();
+            Command command = commandMap.get(input);
+            if (command != null) {
+                command.execute(scanner, handlers);
+            } else {
+                System.out.println("Ungültiger Befehl: " + input);
             }
+        }
 
     }
 }

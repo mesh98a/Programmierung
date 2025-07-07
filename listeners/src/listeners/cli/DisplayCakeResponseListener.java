@@ -1,8 +1,8 @@
 package listeners.cli;
 
-import domainpackage.AbstractCake;
 import eventsimpl.clievent.DisplayCakeResponseEvent;
 import eventsystem.clisystem.CliEventListener;
+import kuchen.Kuchenprodukt;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class DisplayCakeResponseListener implements CliEventListener<DisplayCake
 
     @Override
     public void onCliEvent(DisplayCakeResponseEvent event) {
-        for( AbstractCake cake : event.getCakeList()){
+        for( Kuchenprodukt cake : event.getCakeList()){
             LocalDateTime ablauf = cake.getEinfuegedatum().plus(cake.getHaltbarkeit());
             LocalDateTime jetzt = LocalDateTime.now();
             System.out.print(

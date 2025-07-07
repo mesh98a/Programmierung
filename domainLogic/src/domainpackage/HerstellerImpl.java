@@ -2,8 +2,11 @@ package domainpackage;
 
 import verwaltung.Hersteller;
 
-public class HerstellerImpl implements Hersteller {
-    private final String name;
+import java.io.Serializable;
+
+public class HerstellerImpl implements Hersteller, Serializable {
+    static final long serialVersionUID=1L;
+    private String name;
 
     public HerstellerImpl(String name) {
         this.name = name;

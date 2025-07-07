@@ -1,14 +1,22 @@
 package parser;
 
 
-public class ReadCakeParser {
-    private String filterTyp;
+import kuchen.KuchenTyp;
 
-    public ReadCakeParser(String filterTyp) {
-        this.filterTyp = filterTyp;
+public class ReadCakeParser {
+    private KuchenTyp filterTyp;
+
+    public boolean parse(String input) {
+        try {
+            this.filterTyp = KuchenTyp.valueOf(input);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Kein gültiger Kuchentyp");
+            return false;
+        }
     }
 
-    public String getFilterTyp() {
+    public KuchenTyp getFilterTyp() {
         return filterTyp;
     }
 }

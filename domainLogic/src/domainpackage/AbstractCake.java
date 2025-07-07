@@ -1,20 +1,22 @@
 package domainpackage;
 
 import kuchen.Allergen;
-import kuchen.Kuchen;
+import kuchen.KuchenTyp;
+import kuchen.Kuchenprodukt;
+import domainpackage.dto.CakeDTO;
+import domainpackage.dto.HerstellerDTO;
 import verwaltung.Hersteller;
-import verwaltung.Verkaufsobjekt;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Clock;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 
 // https://link.springer.com/book/10.1007/978-3-662-66582-4
-public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
+public abstract class AbstractCake implements Kuchenprodukt, Serializable {
+    static final long serialVersionUID = 1L;
     protected Hersteller hersteller;
     protected Collection<Allergen> allergene;
     protected int naehrwert;
@@ -72,10 +74,6 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         return this.fachnummer;
     }
 
-    public Date getInsertionDate(){
-        return this.getInsertionDate();
-    }
-
     void setInspektionsdatum(Date inspektionsdatum) {
         this.inspektionsdatum = inspektionsdatum;
     }
@@ -84,7 +82,7 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         this.fachnummer = fachnummer;
     }
 
-    void setEinfuegedatum(LocalDateTime date){
+    void setEinfuegedatum(LocalDateTime date) {
         this.einfuegedatum = date;
     }
 
@@ -92,4 +90,28 @@ public abstract class AbstractCake implements Kuchen, Verkaufsobjekt {
         return this.einfuegedatum;
     }
 
+    protected void fillCommonFields(CakeDTO dto) {
+        dto.setKuchenTyp(this.getKuchenTyp().name());
+
+        HerstellerDTO hDto = new HerstellerDTO();
+        hDto.setName(this.hersteller.getName());
+        dto.setHerstellerDTO(hDto);
+
+        dto.setAllergene(new ArrayList<>(this.allergene.stream().map(Enum::name).toList()));
+        dto.setNaehrwert(this.naehrwert);
+        dto.setHaltbarkeit(this.haltbarkeit.getSeconds());
+        dto.setPreis(this.preis.toPlainString());
+
+        dto.setFachnummer(this.fachnummer);
+        if (inspektionsdatum != null)
+            dto.setInspektionsdatum(inspektionsdatum.toInstant().toString());
+
+        dto.setEinfuegedatum(einfuegedatum.toString());
+    }
+
+    protected CakeDTO toDTO() {
+        CakeDTO dto = new CakeDTO();
+        fillCommonFields(dto);
+        return dto;
+    }
 }

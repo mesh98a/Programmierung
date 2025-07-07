@@ -12,7 +12,7 @@ public class AutomatCapacityObserver implements Beobachter {
 
     @Override
     public void update() {
-        int belegtePlaetze = observable.displayListCake().size();
+        int belegtePlaetze = observable.getListCake().size();
         int kapazitaet = belegtePlaetze + observable.getFreeCapacity();
         double auslastung = (double) belegtePlaetze / kapazitaet;
         if (auslastung > 0.9) {

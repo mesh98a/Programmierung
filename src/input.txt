@@ -3,7 +3,8 @@
 Sonne
 :c
 :k
-Obstkuchen Sonne 10.0 400 4 Gluten Sahne
+Obstkuchen Sonne 12.0 300 4 Gluten Banane
+Obsttorte Sonne 10.0 400 4 Gluten Apfel Sahne
 :r
 :k
 Obst

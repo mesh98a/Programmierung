@@ -21,10 +21,14 @@ public class Inserter extends Thread {
     public void run() {
         while (true) {
             AbstractCake cake = RandomCake.createRandomCake(hersteller,random);
-            boolean success = automat.insertCake(cake);
-            System.out.println(Thread.currentThread().getName() +
-                    " → Kuchen eingefügt: " + success +
-                    ", freie Plätze: " + automat.getFreeCapacity());
+            extracted(cake);
         }
+    }
+
+    public void extracted(AbstractCake cake) {
+        boolean success = automat.insertCake(cake);
+        System.out.println(Thread.currentThread().getName() +
+                " → Kuchen eingefügt: " + success +
+                ", freie Plätze: " + automat.getFreeCapacity());
     }
 }

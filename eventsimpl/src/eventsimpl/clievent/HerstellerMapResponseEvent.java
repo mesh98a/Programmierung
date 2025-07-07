@@ -9,7 +9,8 @@ public class HerstellerMapResponseEvent extends CliEvent {
 
     private final Map<Hersteller, Integer> map;
 
-    public HerstellerMapResponseEvent(Map<Hersteller, Integer> map) {
+    public HerstellerMapResponseEvent(Object source,Map<Hersteller, Integer> map) {
+        super(source);
         this.map = map;
     }
 

@@ -1,5 +1,5 @@
 import cli.Console;
-import cli.Mode;
+import eventsimpl.automatevent.Mode;
 import domainpackage.Automat;
 import eventsystem.automatsystem.AutomatEventHandler;
 import eventsystem.clisystem.CliEventHandler;
@@ -11,9 +11,11 @@ import listeners.cli.DisplayCakeResponseListener;
 import observers.AutomatCapacityObserver;
 import observers.AutomatChangesObserver;
 
+import java.io.*;
+
 public class Cli {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Automat automat = new Automat(3);
         Console cli = new Console();
 

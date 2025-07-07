@@ -21,6 +21,6 @@ public class GetHerstellerMapListener implements AutomatEventListener<GetHerstel
     @Override
     public void onAutomatEvent(GetHerstellerMapEvent event) {
         Map<Hersteller, Integer> map = this.automat.getHerstellerMap();
-        cliEventHandler.handle(new HerstellerMapResponseEvent(map));
+        cliEventHandler.handle(new HerstellerMapResponseEvent(automat,map));
     }
 }

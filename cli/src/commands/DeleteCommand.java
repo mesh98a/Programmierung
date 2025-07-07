@@ -1,6 +1,7 @@
 package commands;
 
-import cli.Mode;
+import cli.Console;
+import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.DeleteCakeEvent;
 import eventsimpl.automatevent.DeleteHerstellerEvent;
 import eventsystem.automatsystem.AutomatEvent;
@@ -23,12 +24,12 @@ public class DeleteCommand implements Command {
             if (input.matches("\\d+")) {
                 DeleteCakeParser dcparser = new DeleteCakeParser();
                 if (dcparser.parse(input)) {
-                    AutomatEvent event = new DeleteCakeEvent(dcparser.getFachnummer());
+                    AutomatEvent event = new DeleteCakeEvent(this,dcparser.getFachnummer());
                     AutomatEventHandler handler = handlers.get(Mode.DELETE_CAKE);
                     if (handler != null) handler.handle(event);
                 }
             } else {
-                    AutomatEvent event = new DeleteHerstellerEvent(input);
+                    AutomatEvent event = new DeleteHerstellerEvent(this,input);
                     AutomatEventHandler handler = handlers.get(Mode.DELETE_HERSTELLER);
                     if (handler != null) handler.handle(event);
 

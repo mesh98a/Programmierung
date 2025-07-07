@@ -1,7 +1,7 @@
 package simulation1;
 
-import domainpackage.AbstractCake;
 import domainpackage.Automat;
+import kuchen.Kuchenprodukt;
 
 import java.util.List;
 import java.util.Random;
@@ -17,18 +17,22 @@ public class Remover extends Thread {
     @Override
     public void run() {
         while (true) {
-            synchronized (automat) {
-                List<AbstractCake> cakeList = automat.displayListCake();
-                if (!cakeList.isEmpty()) {
-                    AbstractCake cake = cakeList.get(random.nextInt(cakeList.size()));
-                    boolean success = automat.deleteCake(cake.getFachnummer());
-                    System.out.println(Thread.currentThread().getName() +
-                            " → Kuchen gelöscht: " + success +
-                            " (Fachnummer " + cake.getFachnummer() + ")");
-                }
-            }
+            extracted();
         }
 
+    }
+
+    private void extracted() {
+        synchronized (automat) {
+            List<Kuchenprodukt> cakeList = automat.getListCake();
+            if (!cakeList.isEmpty()) {
+                Kuchenprodukt cake = cakeList.get(random.nextInt(cakeList.size()));
+                boolean success = automat.deleteCake(cake.getFachnummer());
+                System.out.println(Thread.currentThread().getName() +
+                        " → Kuchen gelöscht: " + success +
+                        " (Fachnummer " + cake.getFachnummer() + ")");
+            }
+        }
     }
 }
 

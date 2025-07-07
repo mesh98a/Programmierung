@@ -17,7 +17,8 @@ public class InsertCakeEvent extends AutomatEvent {
     private Collection<Allergen> allergene;
     private List<String> kuchensorten;
 
-    public InsertCakeEvent(String kuchentyp, String herstellerName, BigDecimal preis, int naehrwert, Duration haltbarkeit, Collection<Allergen> allergenSet, List<String> kuchensorten) {
+    public InsertCakeEvent(Object source,String kuchentyp, String herstellerName, BigDecimal preis, int naehrwert, Duration haltbarkeit, Collection<Allergen> allergenSet, List<String> kuchensorten) {
+        super(source);
         this.kuchentyp = kuchentyp;
         this.herstellerName = herstellerName;
         this.preis = preis;

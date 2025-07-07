@@ -10,6 +10,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import kuchen.Allergen;
+import kuchen.KuchenTyp;
+import kuchen.Kuchenprodukt;
 import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
@@ -233,14 +235,14 @@ public class ViewModel {
     }
 
     public void showKuchen(KuchenTyp kuchenTyp) {
-        List<AbstractCake> cakeList;
+        List<Kuchenprodukt> cakeList;
         if (kuchenTyp == null) {
-            cakeList = automat.displayListCake();
+            cakeList = automat.getListCake();
         } else {
-            cakeList = automat.displayListCake(kuchenTyp);
+            cakeList = automat.getListCake(kuchenTyp);
         }
         cakeListe.clear();
-        for (AbstractCake cake : cakeList) {
+        for (Kuchenprodukt cake : cakeList) {
             Integer fachnummer = cake.getFachnummer();
             String herstellerName = cake.getHersteller().getName();
             Date inspektionsdatum = cake.getInspektionsdatum();
@@ -252,7 +254,7 @@ public class ViewModel {
     }
 
     public void showAllergen() {
-        Set<Allergen> allergen = automat.displayAllergen();
+        Set<Allergen> allergen = automat.getAllergen();
         allergenListe.clear();
         for (Allergen allergene : allergen) {
             allergenListe.add(new AllergenStatistik(allergene));

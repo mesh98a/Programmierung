@@ -14,9 +14,9 @@ public class InsertHerstellerListener implements AutomatEventListener<InsertHers
     public void onAutomatEvent(InsertHerstellerEvent event) {
         boolean result = this.automat.insertHersteller(event.getHerstellerName());
         if(result){
-            System.out.println("Hersteller eingefügt");
+            System.err.println("Hersteller eingefügt");
         }else {
-            System.out.println("Hersteller nicht gefunden");
+            System.err.println("Hersteller nicht gefunden");
         }
     }
 }

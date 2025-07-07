@@ -1,4 +1,4 @@
-package domainpackage;
+package kuchen;
 
 public enum KuchenTyp {
     OBSTKUCHEN ,

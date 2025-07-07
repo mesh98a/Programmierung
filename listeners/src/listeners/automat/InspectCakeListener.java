@@ -16,9 +16,9 @@ public class InspectCakeListener implements AutomatEventListener<InspectCakeEven
     public void onAutomatEvent(InspectCakeEvent event) {
         boolean result = this.automat.inspectCake(event.getFachnummer());
         if (result) {
-            System.out.println("Inspektionsdatum eingesetzt");
+            System.err.println("Inspektionsdatum eingesetzt");
         }else {
-            System.out.println("Inspektionsdatum nicht eingesetzt");
+            System.err.println("Inspektionsdatum nicht eingesetzt");
         }
     }
 }

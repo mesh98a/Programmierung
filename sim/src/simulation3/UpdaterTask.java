@@ -1,6 +1,6 @@
 package simulation3;
-import domainpackage.AbstractCake;
 import domainpackage.Automat;
+import kuchen.Kuchenprodukt;
 
 import java.util.List;
 import java.util.Random;
@@ -18,9 +18,9 @@ public class UpdaterTask extends Thread {
     public void run() {
         try {
             while (true) {
-                AbstractCake toInspect = null;
+                Kuchenprodukt toInspect = null;
                 synchronized (automat) {
-                    List<AbstractCake> cakeList = automat.displayListCake();
+                    List<Kuchenprodukt> cakeList = automat.getListCake();
                     if (!cakeList.isEmpty()) {
                         toInspect = cakeList.get(random.nextInt(cakeList.size()));
                     }

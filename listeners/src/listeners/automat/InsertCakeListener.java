@@ -3,10 +3,11 @@ package listeners.automat;
 import domainpackage.AbstractCake;
 import domainpackage.Automat;
 import domainpackage.HerstellerImpl;
-import domainpackage.KuchenTyp;
+import kuchen.KuchenTyp;
 import domainpackage.CakeFactory;
 import eventsimpl.automatevent.InsertCakeEvent;
 import eventsystem.automatsystem.AutomatEventListener;
+import kuchen.Kuchenprodukt;
 import verwaltung.Hersteller;
 
 public class InsertCakeListener implements AutomatEventListener<InsertCakeEvent> {
@@ -34,14 +35,14 @@ public class InsertCakeListener implements AutomatEventListener<InsertCakeEvent>
                     event.getKuchensorten()
             );
         } catch (Exception e) {
-            System.out.println("Ungültiger Kuchentyp: " + event.getKuchentyp());
+            System.err.println("Ungültiger Kuchentyp: " + event.getKuchentyp());
         }
 
         boolean result = this.automat.insertCake(cake);
         if (result) {
-            System.out.println("Kuchen eingefügt");
+            System.err.println("Kuchen eingefügt");
         } else {
-            System.out.println("Kuchen nicht eingefügt");
+            System.err.println("Kuchen nicht eingefügt");
         }
     }
 }

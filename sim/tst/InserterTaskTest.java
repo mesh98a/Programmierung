@@ -1,14 +1,13 @@
 import domainpackage.AbstractCake;
 import domainpackage.Automat;
 import domainpackage.HerstellerImpl;
+import kuchen.Kuchenprodukt;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import simulation2.InserterTask;
 import verwaltung.Hersteller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Random;
@@ -31,7 +30,7 @@ public class InserterTaskTest {
         InserterTask inserterTask = Mockito.mock(InserterTask.class);
         Mockito.when(inserterTask.extracted(hersteller, random)).thenReturn(true).thenReturn(false);
 
-        List<AbstractCake> kuchenListe = automat.displayListCake();
+        List<Kuchenprodukt> kuchenListe = automat.getListCake();
 
         assertEquals(1,kuchenListe.size());
 

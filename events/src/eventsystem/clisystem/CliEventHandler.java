@@ -3,7 +3,7 @@ package eventsystem.clisystem;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CliEventHandler {
+public class CliEventHandler <E extends CliEvent> {
 
     private final List<CliEventListener> listenerList = new LinkedList<>();
 

@@ -4,7 +4,9 @@ import eventsystem.automatsystem.AutomatEvent;
 
 public class InsertHerstellerEvent extends AutomatEvent {
     private final String herstellerName;
-    public InsertHerstellerEvent(final String herstellerName) {
+
+    public InsertHerstellerEvent(Object source, String herstellerName) {
+        super(source);
         this.herstellerName = herstellerName;
     }
 

@@ -4,7 +4,6 @@ package listeners.automat;
 import domainpackage.Automat;
 import eventsimpl.automatevent.DisplayAllergenEvent;
 import eventsimpl.clievent.DisplayAllergenResponseEvent;
-import eventsimpl.clievent.DisplayCakeResponseEvent;
 import eventsystem.automatsystem.AutomatEventListener;
 import eventsystem.clisystem.CliEventHandler;
 import kuchen.Allergen;
@@ -22,8 +21,8 @@ public class DisplayAllergenListener implements AutomatEventListener<DisplayAlle
 
     @Override
     public void onAutomatEvent(DisplayAllergenEvent event) {
-        Set<Allergen> allergenSet = this.automat.displayAllergen();
-        cliEventHandler.handle(new DisplayAllergenResponseEvent(allergenSet));
+        Set<Allergen> allergenSet = this.automat.getAllergen();
+        cliEventHandler.handle(new DisplayAllergenResponseEvent(automat,allergenSet));
 
     }
 }

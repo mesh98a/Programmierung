@@ -18,9 +18,9 @@ public class DeleteHerstellerListener implements AutomatEventListener<DeleteHers
     public void onAutomatEvent(DeleteHerstellerEvent event) {
         boolean result = this.automat.deleteHersteller(event.getHerstellerName());
         if (result) {
-            System.out.println("Hersteller " + event.getHerstellerName() + " gelöscht.");
+            System.err.println("Hersteller " + event.getHerstellerName() + " gelöscht.");
         } else {
-            System.out.println("Hersteller " + event.getHerstellerName() + " nicht gelöscht.");
+            System.err.println("Hersteller " + event.getHerstellerName() + " nicht gelöscht.");
         }
     }
 }

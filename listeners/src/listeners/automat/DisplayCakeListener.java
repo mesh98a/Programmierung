@@ -1,13 +1,12 @@
 package listeners.automat;
 
-import domainpackage.AbstractCake;
 import domainpackage.Automat;
-import domainpackage.CakeFactory;
-import domainpackage.KuchenTyp;
+import kuchen.KuchenTyp;
 import eventsimpl.automatevent.DisplayCakeEvent;
 import eventsimpl.clievent.DisplayCakeResponseEvent;
 import eventsystem.automatsystem.AutomatEventListener;
 import eventsystem.clisystem.CliEventHandler;
+import kuchen.Kuchenprodukt;
 
 import java.util.List;
 
@@ -22,21 +21,15 @@ public class DisplayCakeListener implements AutomatEventListener<DisplayCakeEven
 
     @Override
     public void onAutomatEvent(DisplayCakeEvent event) {
-        List<AbstractCake> cakeList;
-        KuchenTyp typ = null;
-        try {
-            typ  = KuchenTyp.valueOf(event.getKuchenTyp().toUpperCase());
-        } catch (Exception e) {
-            System.out.println("Ungültiger Kuchentyp: " + event.getKuchenTyp());
-            System.out.println("Alle Kuchen anzeigen:");
-        }
+        List<Kuchenprodukt> cakeList;
+        KuchenTyp typ = event.getKuchenTyp();
 
         if (typ == null) {
-            cakeList = this.automat.displayListCake();
-            cliEventHandler.handle(new DisplayCakeResponseEvent(cakeList));
+            cakeList = this.automat.getListCake();
+            cliEventHandler.handle(new DisplayCakeResponseEvent(automat,cakeList));
         } else {
-            cakeList = this.automat.displayListCake(typ);
-            cliEventHandler.handle(new DisplayCakeResponseEvent(cakeList));
+            cakeList = this.automat.getListCake(typ);
+            cliEventHandler.handle(new DisplayCakeResponseEvent(automat,cakeList));
         }
     }
 }

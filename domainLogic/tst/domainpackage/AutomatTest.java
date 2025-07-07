@@ -1,6 +1,9 @@
 package domainpackage;
 
 import kuchen.Allergen;
+import kuchen.KuchenTyp;
+import kuchen.Kuchenprodukt;
+import kuchen.Obstkuchen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import verwaltung.Hersteller;
@@ -96,7 +99,6 @@ class AutomatTest {
         aut.insertHersteller(hersteller.getName());
         ObstkuchenImpl obstkuchen = mock(ObstkuchenImpl.class);
         when(obstkuchen.getHersteller()).thenReturn(hersteller);
-        //when(obstkuchen.getAllergene()).thenReturn(Arrays.asList(Allergen.Gluten));
         when(obstkuchen.getNaehrwert()).thenReturn(100);
         when(obstkuchen.getHaltbarkeit()).thenReturn(Duration.ofDays(-1));
         when(obstkuchen.getPreis()).thenReturn(new BigDecimal("10.00"));
@@ -157,12 +159,12 @@ class AutomatTest {
 
 
     @Test
-    void testDisplayListCake() {
+    void testGetListCake() {
         Automat aut = new Automat(1);
         aut.insertHersteller(hersteller.getName());
         aut.insertCake(apfelkuchen);
         //
-        List<AbstractCake> kuchenListe = aut.displayListCake();
+        List<Kuchenprodukt> kuchenListe = aut.getListCake();
         //
         assertEquals(1, kuchenListe.size());
     }
@@ -179,13 +181,13 @@ class AutomatTest {
 
         KuchenTyp typ = KuchenTyp.OBSTKUCHEN;
 
-        List<AbstractCake> kuchenListe = aut.displayListCake(typ);
+        List<Kuchenprodukt> kuchenListe = aut.getListCake(typ);
 
         assertEquals(2, kuchenListe.size());
     }
 
     @Test
-    void testDisplayListCakeWithTwoDifferentCakes() {
+    void testGetListCakeWithTwoDifferentCakes() {
         Automat aut = new Automat(2);
         aut.insertHersteller(hersteller.getName());
         aut.insertCake(apfelkuchen);
@@ -197,7 +199,7 @@ class AutomatTest {
 
         aut.insertCake(schokokuchen);
         //
-        List<AbstractCake> cakes = aut.displayListCake();
+        List<Kuchenprodukt> cakes = aut.getListCake();
         //
         assertEquals(2, cakes.size());
     }
@@ -374,7 +376,7 @@ class AutomatTest {
         aut.insertCake(zitronenkuchen);
         aut.insertCake(apfelkuchen);
 
-        Set<Allergen> allergen = aut.displayAllergen();
+        Set<Allergen> allergen = aut.getAllergen();
 
         assertEquals(2, allergen.size());
 
@@ -388,7 +390,7 @@ class AutomatTest {
         AbstractCake schokokuchen = new KremkuchenImpl(hersteller, new BigDecimal("12.00"), 350, Duration.ofDays(5), Arrays.asList(), "Schokolade");
         aut.insertCake(schokokuchen);
 
-        Set<Allergen> allergen = aut.displayAllergen();
+        Set<Allergen> allergen = aut.getAllergen();
 
         assertEquals(0, allergen.size());
 
@@ -424,7 +426,7 @@ class AutomatTest {
         aut.insertCake(apfelkuchen);
         aut.deleteCake(0);
 
-        Set<Allergen> result = aut.displayAllergen();
+        Set<Allergen> result = aut.getAllergen();
 
         assertFalse(result.contains(Allergen.Gluten));
 

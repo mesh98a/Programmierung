@@ -1,6 +1,7 @@
 package commands;
 
-import cli.Mode;
+import cli.Console;
+import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.DisplayAllergenEvent;
 import eventsimpl.automatevent.DisplayCakeEvent;
 import eventsimpl.automatevent.DisplayKeineAllergenEvent;
@@ -25,15 +26,16 @@ public class ReadCommand implements Command {
 
             switch (command) {
                 case ":h":
-                    AutomatEvent hevent = new GetHerstellerMapEvent();
+                    AutomatEvent hevent = new GetHerstellerMapEvent(new Console());
                     AutomatEventHandler hhandler = handlers.get(Mode.DISPLAY_HERSTELLER);
                     if (hhandler != null) hhandler.handle(hevent);
                     break;
 
                 case ":k":
                     System.out.println("Filtertyp:");
-                    ReadCakeParser typ = new ReadCakeParser(scanner.nextLine());
-                    AutomatEvent kevent = new DisplayCakeEvent(typ.getFilterTyp());
+                    ReadCakeParser parser = new ReadCakeParser();
+                    parser.parse(scanner.nextLine());
+                    AutomatEvent kevent = new DisplayCakeEvent(new Console(),parser.getFilterTyp());
                     AutomatEventHandler khandler = handlers.get(Mode.DISPLAY_CAKE);
                     if (khandler != null) khandler.handle(kevent);
                     break;
@@ -44,13 +46,13 @@ public class ReadCommand implements Command {
 
                     AutomatEvent raevent;
                     if ("i".equalsIgnoreCase(vorhanden)) {
-                        raevent = new DisplayAllergenEvent();
+                        raevent = new DisplayAllergenEvent(new Console());
                         AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_ALLERGEN);
                         if (displayAllergenHandler != null) {
                             displayAllergenHandler.handle(raevent);
                         }
                     } else if ("e".equalsIgnoreCase(vorhanden)) {
-                        raevent = new DisplayKeineAllergenEvent();
+                        raevent = new DisplayKeineAllergenEvent(new Console());
                         AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_KEINE_ALLERGEN);
                         if (displayAllergenHandler != null) {
                             displayAllergenHandler.handle(raevent);
