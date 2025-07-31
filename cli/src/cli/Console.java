@@ -30,16 +30,22 @@ public class Console {
     public void execute() {
         Scanner s = new Scanner(System.in);
         this.scanner = s;
+        System.out.println("Enter command (:c = insert, :r = read, :d = delete, :u = update,:p = persistence, :x = exit): ");
+        String input = s.nextLine().trim();
         while (true) {
-            System.out.println("Enter command (:c = insert, :r = read, :d = delete, :u = update,:p = persistence, :x = exit): ");
-            String input = s.nextLine().trim();
             Command command = commandMap.get(input);
             if (command != null) {
-                command.execute(scanner, handlers);
+                input = command.execute(scanner, handlers, commandMap);
             } else {
                 System.out.println("Ungültiger Befehl: " + input);
+                input = s.nextLine().trim();
             }
         }
 
     }
+
+    public Map<String, Command> getCommandMap() {
+        return commandMap;
+    }
+
 }

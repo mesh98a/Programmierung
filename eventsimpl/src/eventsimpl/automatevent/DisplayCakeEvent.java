@@ -4,15 +4,15 @@ import eventsystem.automatsystem.AutomatEvent;
 import kuchen.KuchenTyp;
 
 public class DisplayCakeEvent extends AutomatEvent {
-    private final KuchenTyp kuchenTyp;
+    private final String kuchenTyp;
 
-    public DisplayCakeEvent(Object source,KuchenTyp  typ) {
+    public DisplayCakeEvent(Object source,String  typ) {
         super(source);
         this.kuchenTyp = typ;
 
     }
 
-    public KuchenTyp getKuchenTyp() {
+    public String getKuchenTyp() {
         return this.kuchenTyp;
     }
 }

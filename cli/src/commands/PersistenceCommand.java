@@ -1,6 +1,5 @@
 package commands;
 
-import cli.Console;
 import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.PersistenceLoadEvent;
 import eventsimpl.automatevent.PersistenceSaveEvent;
@@ -13,35 +12,43 @@ import java.util.Scanner;
 
 public class PersistenceCommand implements Command {
     @Override
-    public void execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers) {
+    public String execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers, Map<String, Command> commands) {
         while (true) {
-            System.out.print("(:s JOS|JBP speichere die Datei / :l JOS|JBP lade die Datei / :x Modus verlassen) ");
+            System.out.print("(save JOS|JBP speichere die Datei / load JOS|JBP lade die Datei / :x Modus verlassen) ");
             String command = scanner.nextLine();
 
-            if (command.equalsIgnoreCase(":x")) {
-                System.out.println("Persistence Modus verlassen.");
-                break;
+            if (command.startsWith(":") && commands.containsKey(command)) {
+                System.out.println("Moduswechsel auf " + command);
+                return command;
             }
 
             PersistenceParser parser = new PersistenceParser();
             if (parser.parse(command)) {
 
                 switch (parser.getAction()) {
-                    case ":s":
-                        AutomatEvent persistenceSaveEvent = new PersistenceSaveEvent(new Console(),parser.getMode());
-                        AutomatEventHandler persistenceSaveHandler = handlers.get(Mode.PERSIST_SAVE);
-                        if (persistenceSaveHandler != null) persistenceSaveHandler.handle(persistenceSaveEvent);
+                    case "save":
+                        save(parser, handlers);
                         break;
 
-                    case ":l":
-                        AutomatEvent persistenceLoadEvent = new PersistenceLoadEvent(new Console(),parser.getMode());
-                        AutomatEventHandler persistenceLoadHandler = handlers.get(Mode.PERSIST_LOAD);
-                        if (persistenceLoadHandler != null) persistenceLoadHandler.handle(persistenceLoadEvent);
+                    case "load":
+                        load(parser, handlers);
                         break;
                     default:
                         System.out.println("Unbekannter Lesebefehl.");
                 }
             }
         }
+    }
+
+    public void save(PersistenceParser parser, Map<Mode, AutomatEventHandler> handlers) {
+        AutomatEvent persistenceSaveEvent = new PersistenceSaveEvent(this, parser.getMode());
+        AutomatEventHandler persistenceSaveHandler = handlers.get(Mode.PERSIST_SAVE);
+        if (persistenceSaveHandler != null) persistenceSaveHandler.handle(persistenceSaveEvent);
+    }
+
+    public void load(PersistenceParser parser, Map<Mode, AutomatEventHandler> handlers) {
+        AutomatEvent persistenceLoadEvent = new PersistenceLoadEvent(this, parser.getMode());
+        AutomatEventHandler persistenceLoadHandler = handlers.get(Mode.PERSIST_LOAD);
+        if (persistenceLoadHandler != null) persistenceLoadHandler.handle(persistenceLoadEvent);
     }
 }

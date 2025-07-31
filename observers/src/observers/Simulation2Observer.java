@@ -1,4 +1,4 @@
-package simulation2;
+package observers;
 
 import domainpackage.Automat;
 import observerpattern.Beobachter;

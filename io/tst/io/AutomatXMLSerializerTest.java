@@ -1,9 +1,7 @@
-package persistence;
+package io;
 
-import domainpackage.Automat;
 import domainpackage.dto.AutomatDTO;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;

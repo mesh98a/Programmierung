@@ -1,6 +1,8 @@
 package gui.viewmodel;
 
 import domainpackage.*;
+import domainpackage.dto.AutomatDTO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +14,8 @@ import javafx.scene.input.TransferMode;
 import kuchen.Allergen;
 import kuchen.KuchenTyp;
 import kuchen.Kuchenprodukt;
+import io.AutomatSerializer;
+import io.AutomatXMLSerializer;
 import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
@@ -20,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class ViewModel {
+    public Button save_button;
+    public Button load_button;
     private Automat automat;
 
     @FXML
@@ -57,6 +63,9 @@ public class ViewModel {
 
     @FXML
     private ComboBox<KuchenTyp> input_kuchentyp;
+
+    @FXML
+    private ComboBox<String> input_typ;
 
     @FXML
     private TextField input_preis;
@@ -111,13 +120,12 @@ public class ViewModel {
         if (herstellerAusgefuellt && !kuchenAusgefuellt) {
             insertHersteller();
         } else if (herstellerAusgefuellt && kuchenAusgefuellt) {
-            insertKuchen();
+            Platform.runLater(() -> {
+                insertKuchen();
+            });
         } else {
             showAlert(Alert.AlertType.ERROR, "Eingabefehler", "Bitte mindestens den Herstellernamen eingeben.");
         }
-        showHersteller();
-        showKuchen(null);
-        showAllergen();
     }
 
     private void insertHersteller() {
@@ -139,7 +147,7 @@ public class ViewModel {
             Duration haltbarkeit = Duration.ofHours(haltbarkeitStunden);
             Collection<Allergen> allergen = new HashSet<>(input_allergene.getSelectionModel().getSelectedItems());
             String extras = input_extras.getText();
-            List<String> extrasList = Arrays.asList(extras.split(","));
+            List<String> extrasList = Arrays.asList(extras.split(" "));
 
             Hersteller hersteller = new HerstellerImpl(herstellerName);
 
@@ -166,7 +174,6 @@ public class ViewModel {
                 int fachnummer = Integer.parseInt(input_fachnummer.getText());
 
                 automat.inspectCake(fachnummer);
-                showKuchen(null);
                 input_fachnummer.clear();
             } catch (NumberFormatException e) {
                 showAlert(Alert.AlertType.ERROR, "Eingabefehler", "Bitte eine Zahl eingeben");
@@ -193,9 +200,6 @@ public class ViewModel {
         } else {
             showAlert(Alert.AlertType.ERROR, "Eingabefehler", "Hersteller oder Fachnummer eingeben.");
         }
-        showKuchen(null);
-        showAllergen();
-        showHersteller();
     }
 
     private void deleteCake() {
@@ -221,9 +225,35 @@ public class ViewModel {
                 automat.deleteHersteller(herstellerName);
                 input_hersteller.clear();
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Eingabefehler", "Keinen Hersteller gefunden");
+                showAlert(Alert.AlertType.ERROR, "Eingabefehler", "Kein Hersteller gefunden");
             }
         }
+    }
+
+    @FXML
+    private void save() {
+        String value = input_typ.getValue();
+
+        if (value.equalsIgnoreCase("JOS")) {
+            AutomatSerializer.serialize("automat.ser", automat);
+        } else if (value.equalsIgnoreCase("JBP")) {
+            AutomatDTO dto = automat.createDTO();
+            AutomatXMLSerializer.save("automat.xml", dto);
+        }
+    }
+
+    @FXML
+    private void load() {
+        String value = input_typ.getValue();
+
+        if (value.equalsIgnoreCase("JOS")) {
+            Automat loadedAutomat = AutomatSerializer.deserialize("automat.ser");
+            automat.copyFrom(loadedAutomat);
+        } else if (value.equalsIgnoreCase("JBP")) {
+            AutomatDTO loadedAutomat = AutomatXMLSerializer.load("automat.xml");
+            this.automat.restoreFromDTO(loadedAutomat);
+        }
+
     }
 
     public void showHersteller() {
@@ -246,15 +276,13 @@ public class ViewModel {
             Integer fachnummer = cake.getFachnummer();
             String herstellerName = cake.getHersteller().getName();
             Date inspektionsdatum = cake.getInspektionsdatum();
-            LocalDateTime ablauf = cake.getEinfuegedatum().plus(cake.getHaltbarkeit());
-            LocalDateTime jetzt = LocalDateTime.now();
-            long haltbarkeit = Duration.between(jetzt, ablauf).getSeconds();
+            long haltbarkeit = cake.getHaltbarkeit().getSeconds();
             cakeListe.add(new CakeStatistik(fachnummer, herstellerName, inspektionsdatum, haltbarkeit));
         }
     }
 
     public void showAllergen() {
-        Set<Allergen> allergen = automat.getAllergen();
+        Set<Allergen> allergen = automat.getAllergen(true);
         allergenListe.clear();
         for (Allergen allergene : allergen) {
             allergenListe.add(new AllergenStatistik(allergene));
@@ -289,6 +317,15 @@ public class ViewModel {
         input_allergene.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    public void comboPers() {
+        List<String> liste = new ArrayList<>();
+        liste.add("JOS");
+        liste.add("JBP");
+        ObservableList items = FXCollections.observableList(liste);
+        input_typ.setItems(items);
+    }
+
+
     public void comboKuchentyp() {
         Set<KuchenTyp> kuchenTyps = EnumSet.allOf(KuchenTyp.class);
         List<KuchenTyp> kuchenList = new ArrayList<>(kuchenTyps);
@@ -298,13 +335,20 @@ public class ViewModel {
 
     public void setAutomat(Automat automat) {
         this.automat = automat;
+        automat.registerObserver(() -> {
+            // Quelle von ChatGPT gui.png
+            Platform.runLater(() -> {
+                showKuchen(null);
+                showAllergen();
+                showHersteller();
+            });
+        });
     }
 
     private void setupDragAndDrop() {
         table_cake.setRowFactory(tv -> {
             TableRow<CakeStatistik> row = new TableRow<>();
 
-            // Drag starten
             row.setOnDragDetected(event -> {
                 if (!row.isEmpty()) {
                     Integer draggedFachnummer = row.getItem().getFachnummer();
@@ -337,7 +381,6 @@ public class ViewModel {
 
                             boolean swapSuccessful = automat.swapFachnummern(draggedFachnummer, targetFachnummer);
                             if (swapSuccessful) {
-                                showKuchen(null);
                                 success = true;
                             }
                         }
@@ -358,6 +401,7 @@ public class ViewModel {
 
     @FXML
     public void initialize() {
+        comboPers();
         comboKuchentyp();
         comboAllergen();
         setupDragAndDrop();

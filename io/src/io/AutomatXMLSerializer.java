@@ -1,4 +1,4 @@
-package persistence;
+package io;
 
 import domainpackage.dto.AutomatDTO;
 

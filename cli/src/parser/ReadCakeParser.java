@@ -1,22 +1,28 @@
 package parser;
 
-
-import kuchen.KuchenTyp;
-
 public class ReadCakeParser {
-    private KuchenTyp filterTyp;
+    private String mode;
+    private String filterTyp;
 
     public boolean parse(String input) {
+        String[] parts = input.trim().split(" ");
         try {
-            this.filterTyp = KuchenTyp.valueOf(input);
+            this.mode = parts[0];
+            if (parts.length > 1) {
+                this.filterTyp = parts[1];
+            }
             return true;
         } catch (Exception e) {
-            System.out.println("Kein gültiger Kuchentyp");
+            System.out.println("Fehler beim Parseen der KuchenTyp " + e);
             return false;
         }
     }
 
-    public KuchenTyp getFilterTyp() {
+    public String getFilterTyp() {
         return filterTyp;
+    }
+
+    public String getMode() {
+        return mode;
     }
 }

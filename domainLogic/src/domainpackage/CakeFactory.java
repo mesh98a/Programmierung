@@ -18,7 +18,6 @@ public class CakeFactory {
             case OBSTKUCHEN -> new ObstkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergenSet, kuchensorten.get(0));
             case KREMKUCHEN -> new KremkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergenSet, kuchensorten.get(0));
             case OBSTTORTE -> new ObsttorteImpl(hersteller, preis, naehrwert, haltbarkeit, allergenSet, kuchensorten.get(0), kuchensorten.get(1));
-            default -> throw new IllegalArgumentException("Unbekannter Kuchentyp: " + typ);
         };
         return cake;
     }

@@ -16,7 +16,7 @@ public class InsertHerstellerListener implements AutomatEventListener<InsertHers
         if(result){
             System.err.println("Hersteller eingefügt");
         }else {
-            System.err.println("Hersteller nicht gefunden");
+            System.err.println("Hersteller nicht eingefügt");
         }
     }
 }

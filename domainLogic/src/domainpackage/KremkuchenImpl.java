@@ -34,8 +34,9 @@ public class KremkuchenImpl extends AbstractCake implements Kremkuchen {
     }
 
     @Override
-    protected void fillCommonFields(CakeDTO dto) {
-        super.fillCommonFields(dto);
+    protected CakeDTO toDTO() {
+        CakeDTO dto = super.toDTO();
         dto.setExtras(new ArrayList<>(Arrays.asList(this.kremsorte)));
+        return dto;
     }
 }

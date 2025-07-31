@@ -21,7 +21,7 @@ public class DisplayAllergenListener implements AutomatEventListener<DisplayAlle
 
     @Override
     public void onAutomatEvent(DisplayAllergenEvent event) {
-        Set<Allergen> allergenSet = this.automat.getAllergen();
+        Set<Allergen> allergenSet = this.automat.getAllergen(event.isVorhanden());
         cliEventHandler.handle(new DisplayAllergenResponseEvent(automat,allergenSet));
 
     }

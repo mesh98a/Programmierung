@@ -8,24 +8,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Simulation1 {
+    private static int capacity = 5;
     public static void main(String[] args) {
-        int capacity = 5;
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Bitte Kapazität eingeben (oder Enter für Standard 5): ");
-
-        String input = scanner.nextLine();
-
-        if (!input.isBlank()) {
+        if (args.length > 0) {
             try {
-                capacity = Integer.parseInt(input);
-                if (capacity < 0) {
-                    System.out.println("Kapazität darf nicht negativ sein. Verwende Standardwert 5.");
-                    capacity = 5;
-                }
+                capacity = Integer.parseInt(args[0]);
+                System.out.println("Kapazität gesetzt auf: " + capacity);
             } catch (NumberFormatException e) {
-                System.out.println("Ungültige Zahl! Verwende Standardwert 5.");
-                capacity = 5;
+                System.out.println("Ungültiges Argument: '" + args[0] + "'. Verwende Standard-Kapazität " + capacity);
             }
         }
         Automat automat = new Automat(capacity);

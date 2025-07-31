@@ -20,7 +20,7 @@ public class Inserter extends Thread {
     @Override
     public void run() {
         while (true) {
-            AbstractCake cake = RandomCake.createRandomCake(hersteller,random);
+            AbstractCake cake = RandomCake.createRandomCake(hersteller, random);
             extracted(cake);
         }
     }
@@ -28,7 +28,6 @@ public class Inserter extends Thread {
     public void extracted(AbstractCake cake) {
         boolean success = automat.insertCake(cake);
         System.out.println(Thread.currentThread().getName() +
-                " → Kuchen eingefügt: " + success +
-                ", freie Plätze: " + automat.getFreeCapacity());
+                " → Kuchen eingefügt: " + success);
     }
 }

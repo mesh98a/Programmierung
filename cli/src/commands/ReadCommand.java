@@ -1,10 +1,8 @@
 package commands;
 
-import cli.Console;
 import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.DisplayAllergenEvent;
 import eventsimpl.automatevent.DisplayCakeEvent;
-import eventsimpl.automatevent.DisplayKeineAllergenEvent;
 import eventsimpl.automatevent.GetHerstellerMapEvent;
 import eventsystem.automatsystem.AutomatEvent;
 import eventsystem.automatsystem.AutomatEventHandler;
@@ -15,56 +13,56 @@ import java.util.Scanner;
 
 public class ReadCommand implements Command {
     @Override
-    public void execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers) {
+    public String execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers, Map<String, Command> commands) {
         while (true) {
-            System.out.println("Was möchtest du ansehen? (:h hersteller / :k kuchen / :a  allergen /:x Read Modus verlassen)");
+            System.out.println("Was möchtest du ansehen? hersteller / kuchen / allergene /");
             String command = scanner.nextLine().trim();
-            if (command.equalsIgnoreCase(":x")) {
-                System.out.println("Read Modus verlassen.");
-                break;
+            if (command.startsWith(":") && commands.containsKey(command)) {
+                System.out.println("Moduswechsel auf " + command);
+                return command;
             }
+            ReadCakeParser parser = new ReadCakeParser();
+            if (parser.parse(command)) {
 
-            switch (command) {
-                case ":h":
-                    AutomatEvent hevent = new GetHerstellerMapEvent(new Console());
-                    AutomatEventHandler hhandler = handlers.get(Mode.DISPLAY_HERSTELLER);
-                    if (hhandler != null) hhandler.handle(hevent);
-                    break;
+                switch (parser.getMode()) {
+                    case "hersteller":
+                        readHersteller(handlers);
+                        break;
 
-                case ":k":
-                    System.out.println("Filtertyp:");
-                    ReadCakeParser parser = new ReadCakeParser();
-                    parser.parse(scanner.nextLine());
-                    AutomatEvent kevent = new DisplayCakeEvent(new Console(),parser.getFilterTyp());
-                    AutomatEventHandler khandler = handlers.get(Mode.DISPLAY_CAKE);
-                    if (khandler != null) khandler.handle(kevent);
-                    break;
+                    case "kuchen":
+                        AutomatEvent kuchenEvent = new DisplayCakeEvent(this, parser.getFilterTyp());
+                        AutomatEventHandler khandler = handlers.get(Mode.DISPLAY_CAKE);
+                        if (khandler != null) khandler.handle(kuchenEvent);
+                        break;
 
-                case ":a":
-                    System.out.println("enthalten(i)/nicht enthalten(e): ");
-                    String vorhanden = scanner.nextLine();
+                    case "allergene":
+                        String vorhanden = parser.getFilterTyp();
+                        boolean enthalten;
 
-                    AutomatEvent raevent;
-                    if ("i".equalsIgnoreCase(vorhanden)) {
-                        raevent = new DisplayAllergenEvent(new Console());
+                        if ("i".equalsIgnoreCase(vorhanden)) {
+                            enthalten = true;
+                        } else if ("e".equalsIgnoreCase(vorhanden)) {
+                            enthalten = false;
+                        } else {
+                            System.out.println("Ungültige Eingabe. Bitte 'i' oder 'e' eingeben.");
+                            break;
+                        }
+                        AutomatEvent allergenEvent = new DisplayAllergenEvent(this, enthalten);
                         AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_ALLERGEN);
                         if (displayAllergenHandler != null) {
-                            displayAllergenHandler.handle(raevent);
+                            displayAllergenHandler.handle(allergenEvent);
                         }
-                    } else if ("e".equalsIgnoreCase(vorhanden)) {
-                        raevent = new DisplayKeineAllergenEvent(new Console());
-                        AutomatEventHandler displayAllergenHandler = handlers.get(Mode.DISPLAY_KEINE_ALLERGEN);
-                        if (displayAllergenHandler != null) {
-                            displayAllergenHandler.handle(raevent);
-                        }
-                    } else {
-                        System.out.println("Ungültige Eingabe. Bitte 'i' oder 'e' eingeben.");
                         break;
-                    }
-                    break;
-                default:
-                    System.out.println("Unbekannter Lesebefehl.");
+                    default:
+                        System.out.println("Unbekannter Lesebefehl.");
+                }
             }
         }
+    }
+
+    public void readHersteller(Map<Mode, AutomatEventHandler> handlers) {
+        AutomatEvent herstellerEvent = new GetHerstellerMapEvent(this);
+        AutomatEventHandler hhandler = handlers.get(Mode.DISPLAY_HERSTELLER);
+        if (hhandler != null) hhandler.handle(herstellerEvent);
     }
 }

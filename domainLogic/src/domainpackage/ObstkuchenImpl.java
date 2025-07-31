@@ -33,9 +33,10 @@ public class ObstkuchenImpl extends AbstractCake implements Obstkuchen {
     }
 
     @Override
-    protected void fillCommonFields(CakeDTO dto) {
-        super.fillCommonFields(dto);
+    protected CakeDTO toDTO() {
+        CakeDTO dto = super.toDTO();
         dto.setExtras(new ArrayList<>(Arrays.asList(this.obstsorte)));
+        return dto;
     }
 }
 

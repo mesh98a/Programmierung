@@ -1,6 +1,5 @@
 package commands;
 
-import cli.Console;
 import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.DeleteCakeEvent;
 import eventsimpl.automatevent.DeleteHerstellerEvent;
@@ -13,14 +12,15 @@ import java.util.Scanner;
 
 public class DeleteCommand implements Command {
     @Override
-    public void execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers) {
+    public String execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers,Map<String, Command> commands) {
         while (true) {
-            System.out.println("Herstellername oder Fachnummer eingeben (:x modus verlassen): ");
+            System.out.println("Herstellername oder Fachnummer eingeben");
             String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase(":x")) {
-                System.out.println("Delete Modus verlassen.");
-                break;
+            if (input.startsWith(":") && commands.containsKey(input)) {
+                System.out.println("Moduswechsel auf " + input);
+                return input;
             }
+
             if (input.matches("\\d+")) {
                 DeleteCakeParser dcparser = new DeleteCakeParser();
                 if (dcparser.parse(input)) {
@@ -37,3 +37,4 @@ public class DeleteCommand implements Command {
         }
     }
 }
+

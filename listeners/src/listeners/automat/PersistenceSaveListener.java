@@ -4,8 +4,8 @@ import domainpackage.Automat;
 import domainpackage.dto.AutomatDTO;
 import eventsimpl.automatevent.PersistenceSaveEvent;
 import eventsystem.automatsystem.AutomatEventListener;
-import persistence.AutomatSerializer;
-import persistence.AutomatXMLSerializer;
+import io.AutomatSerializer;
+import io.AutomatXMLSerializer;
 
 public class PersistenceSaveListener implements AutomatEventListener<PersistenceSaveEvent> {
     private final Automat automat;
@@ -20,7 +20,6 @@ public class PersistenceSaveListener implements AutomatEventListener<Persistence
         try {
             if (mode.equalsIgnoreCase("JOS")) {
                 AutomatSerializer.serialize("automat.ser", automat);
-                ;
                 System.err.println("Gespeichert mit JOS.");
             } else if (mode.equalsIgnoreCase("JBP")) {
                 AutomatDTO dto = automat.createDTO();

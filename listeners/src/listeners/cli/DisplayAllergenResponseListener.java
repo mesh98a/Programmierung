@@ -10,7 +10,7 @@ public class DisplayAllergenResponseListener implements CliEventListener<Display
 
     @Override
     public void onCliEvent(DisplayAllergenResponseEvent event) {
-        System.out.println("Allergene [enthalten (i)]:");
+        System.out.println("Allergene:");
         for (Allergen allergen : event.getAllergen()){
             System.out.println(" - " + allergen);
         }

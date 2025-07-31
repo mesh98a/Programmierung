@@ -4,7 +4,7 @@ import eventsystem.automatsystem.AutomatEvent;
 import eventsystem.automatsystem.AutomatEventListener;
 import net.Client;
 
-import java.io.IOException;
+
 
 public class ClientListener implements AutomatEventListener<AutomatEvent> {
     private final Client client;

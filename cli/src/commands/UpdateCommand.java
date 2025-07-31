@@ -1,6 +1,5 @@
 package commands;
 
-import cli.Console;
 import eventsimpl.automatevent.Mode;
 import eventsimpl.automatevent.InspectCakeEvent;
 import eventsystem.automatsystem.AutomatEvent;
@@ -12,17 +11,17 @@ import java.util.Scanner;
 
 public class UpdateCommand implements Command {
     @Override
-    public void execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers) {
+    public String execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers,Map<String, Command> commands) {
         while (true) {
-            System.out.println("Fachnummer des Kuchens (:x modus verlassen): ");
+            System.out.println("Fachnummer des Kuchens");
             String command = scanner.nextLine().trim();
-            if (command.equalsIgnoreCase(":x")) {
-                System.out.println("Update Modus verlassen.");
-                break;
+            if (command.startsWith(":") && commands.containsKey(command)) {
+                System.out.println("Moduswechsel auf " + command);
+                return command;
             }
-            UpdateParser parser = new UpdateParser();
+                UpdateParser parser = new UpdateParser();
             if (parser.parse(command)) {
-                AutomatEvent event = new InspectCakeEvent(new Console(),parser.getFachnummer());
+                AutomatEvent event = new InspectCakeEvent(this,parser.getFachnummer());
                 AutomatEventHandler handler = handlers.get(Mode.UPDATE_INSPECTDATE);
                 if (handler != null) handler.handle(event);
             }

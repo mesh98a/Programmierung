@@ -5,12 +5,11 @@ import domainpackage.dto.AutomatDTO;
 import eventsimpl.automatevent.PersistenceLoadEvent;
 
 import eventsystem.automatsystem.AutomatEventListener;
-import persistence.AutomatSerializer;
-import persistence.AutomatXMLSerializer;
+import io.AutomatSerializer;
+import io.AutomatXMLSerializer;
 
 public class PersistenceLoadListener implements AutomatEventListener<PersistenceLoadEvent> {
     private Automat automat;
-    //private final CliEventHandler cliEventHandler;
 
     public PersistenceLoadListener(Automat automat) {
         this.automat = automat;

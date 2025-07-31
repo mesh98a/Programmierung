@@ -8,7 +8,6 @@ public enum Mode {
     DISPLAY_HERSTELLER(GetHerstellerMapEvent.class),
     DISPLAY_CAKE(DisplayCakeEvent.class),
     DISPLAY_ALLERGEN(DisplayAllergenEvent.class),
-    DISPLAY_KEINE_ALLERGEN(DisplayKeineAllergenEvent.class),
     DELETE_CAKE(DeleteCakeEvent.class),
     DELETE_HERSTELLER(DeleteHerstellerEvent.class),
     UPDATE_INSPECTDATE(InspectCakeEvent.class),

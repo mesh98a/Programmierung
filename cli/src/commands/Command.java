@@ -7,5 +7,5 @@ import java.util.Map;
 import java.util.Scanner;
 
 public interface Command {
-    void execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers);
+   String execute(Scanner scanner, Map<Mode, AutomatEventHandler> handlers,Map<String, Command> commands);
 }

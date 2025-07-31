@@ -9,7 +9,6 @@ import observerpattern.Subjekt;
 import verwaltung.Hersteller;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,7 @@ public class Automat implements Subjekt, Serializable {
     private int capacity;
     private Map<Hersteller, Integer> herstellerMap;
     private Set<Allergen> allergen;
-    private List<Beobachter> observers;
+    private transient List<Beobachter> observers;
 
     public Automat(int capacity) {
         this.capacity = capacity;
@@ -53,8 +52,6 @@ public class Automat implements Subjekt, Serializable {
             if (this.cakes[i] == null) {
                 this.cakes[i] = cake;
                 cake.setFachnummer(i);
-
-                cake.setEinfuegedatum(LocalDateTime.now());
 
                 int count = this.herstellerMap.get(hersteller);
                 this.herstellerMap.put(hersteller, count + 1);
@@ -90,17 +87,14 @@ public class Automat implements Subjekt, Serializable {
         return filterCakeList;
     }
 
-    public synchronized Set<Allergen> getAllergen() {
-        return new HashSet<>(this.allergen);
-    }
-
-    public synchronized Set<Allergen> displaykeineAllergen() {
-        Set<Allergen> allergene = new HashSet<>(this.allergen);
-        Set<Allergen> allAllergene = EnumSet.allOf(Allergen.class);
-
-        Set<Allergen> keineAllergene = new HashSet<>(allAllergene);
-        keineAllergene.removeAll(allergene);
-        return keineAllergene;
+    public synchronized Set<Allergen> getAllergen(boolean vorhandene) {
+        if (!vorhandene) {
+            Set<Allergen> allAllergene = EnumSet.allOf(Allergen.class);
+            allAllergene.removeAll(this.allergen);
+            return allAllergene;
+        } else {
+            return new HashSet<>(this.allergen);
+        }
     }
 
 
@@ -113,10 +107,10 @@ public class Automat implements Subjekt, Serializable {
             return false;
         }
         Hersteller hersteller = cakeToRemove.getHersteller();
-        if (this.herstellerMap.containsKey(hersteller)) {
-            int currentCount = herstellerMap.get(hersteller);
-            herstellerMap.put(hersteller, currentCount - 1);
-        }
+
+        int currentCount = herstellerMap.get(hersteller);
+        herstellerMap.put(hersteller, currentCount - 1);
+
 
         Collection<Allergen> allergensToRemove = cakeToRemove.getAllergene();
         this.allergen.removeAll(allergensToRemove);
@@ -150,11 +144,15 @@ public class Automat implements Subjekt, Serializable {
         if (herstellerName == null || herstellerName.isEmpty()) {
             return false;
         }
+        if (herstellerName.matches("\\d+")) {
+            return false;
+        }
         Hersteller hersteller = new HerstellerImpl(herstellerName);
         if (this.herstellerMap.containsKey(hersteller)) {
             return false;
         }
         this.herstellerMap.put(hersteller, 0);
+        notifyObservers();
         return true;
     }
 
@@ -166,20 +164,10 @@ public class Automat implements Subjekt, Serializable {
         Hersteller toRemove = new HerstellerImpl(herstellerName);
         if (this.herstellerMap.containsKey(toRemove)) {
             this.herstellerMap.remove(toRemove);
+            notifyObservers();
             return true;
         }
         return false;
-    }
-
-    public synchronized int getFreeCapacity() {
-        int counter = 0;
-        for (AbstractCake cake : cakes) {
-            if (cake != null) {
-                counter++;
-            }
-        }
-
-        return this.capacity - counter;
     }
 
     @Override
@@ -199,13 +187,14 @@ public class Automat implements Subjekt, Serializable {
         }
     }
 
+    public List<Beobachter> getObservers() {
+        return new ArrayList<>(observers);
+    }
+
     public synchronized boolean swapFachnummern(int fachnummer1, int fachnummer2) {
         AbstractCake cake1 = cakes[fachnummer1];
         AbstractCake cake2 = cakes[fachnummer2];
 
-        if (cake1 == null || cake2 == null) {
-            return false;
-        }
         int tempFachnummer = -1;
 
         cake1.setFachnummer(tempFachnummer);
@@ -214,11 +203,12 @@ public class Automat implements Subjekt, Serializable {
 
         cakes[fachnummer1] = cake2;
         cakes[fachnummer2] = cake1;
+        notifyObservers();
 
         return true;
     }
 
-    public void copyFrom(Automat other) {
+    public synchronized void copyFrom(Automat other) {
         if (other == null) {
             return;
         }
@@ -229,14 +219,13 @@ public class Automat implements Subjekt, Serializable {
         this.herstellerMap = new HashMap<>(other.herstellerMap);
 
         this.allergen = new HashSet<>(other.allergen);
-
+        notifyObservers();
     }
 
     public synchronized AutomatDTO createDTO() {
         AutomatDTO dto = new AutomatDTO();
         dto.setCapacity(this.capacity);
 
-        // Map<Hersteller, Integer> → List<HerstellerStatDTO>
         List<HerstellerMapDTO> herstellerListe = this.getHerstellerMap().entrySet().stream()
                 .map(entry -> new HerstellerMapDTO(
                         new HerstellerDTO(entry.getKey().getName()),
@@ -244,19 +233,17 @@ public class Automat implements Subjekt, Serializable {
                 .collect(Collectors.toList());
         dto.setHerstellerListe(herstellerListe);
 
-        // Set<Allergen> → List<String>
-        List<String> allergene = this.getAllergen().stream()
+        List<String> allergene = this.getAllergen(true).stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());
         dto.setAllergene(allergene);
 
-        // AbstractCake[] → List<CakeDTO>
         List<CakeDTO> cakeDTOs = Arrays.stream(this.cakes)
                 .filter(Objects::nonNull)
                 .map(CakeDTOMapper::toDTO)
                 .collect(Collectors.toList());
         dto.setCakes(cakeDTOs);
-
+        notifyObservers();
         return dto;
     }
 
@@ -278,6 +265,7 @@ public class Automat implements Subjekt, Serializable {
         for (String a : automatDTO.getAllergene()) {
             this.allergen.add(Allergen.valueOf(a));
         }
+        notifyObservers();
     }
 
 

@@ -22,14 +22,20 @@ public class DisplayCakeListener implements AutomatEventListener<DisplayCakeEven
     @Override
     public void onAutomatEvent(DisplayCakeEvent event) {
         List<Kuchenprodukt> cakeList;
-        KuchenTyp typ = event.getKuchenTyp();
+        KuchenTyp typ = null;
+        try {
+            typ = KuchenTyp.valueOf(event.getKuchenTyp().toUpperCase());
+        } catch (Exception e) {
+            System.err.println("Kuchentyp nicht gefunden: " + event.getKuchenTyp());
+            System.err.println("Zeige alle Kuchen: ");
+        }
 
         if (typ == null) {
             cakeList = this.automat.getListCake();
-            cliEventHandler.handle(new DisplayCakeResponseEvent(automat,cakeList));
+            cliEventHandler.handle(new DisplayCakeResponseEvent(automat, cakeList));
         } else {
             cakeList = this.automat.getListCake(typ);
-            cliEventHandler.handle(new DisplayCakeResponseEvent(automat,cakeList));
+            cliEventHandler.handle(new DisplayCakeResponseEvent(automat, cakeList));
         }
     }
 }

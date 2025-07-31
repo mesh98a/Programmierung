@@ -1,14 +1,12 @@
 package net;
 
 import eventsimpl.clievent.CliHandlerController;
-import eventsimpl.clievent.HerstellerMapResponseEvent;
 import eventsystem.automatsystem.AutomatEvent;
 import eventsystem.clisystem.CliEvent;
-import eventsystem.clisystem.CliEventHandler;
+
 
 import java.io.*;
 import java.net.Socket;
-import java.util.EventObject;
 
 public class Client {
     private final Socket socket;
@@ -36,7 +34,7 @@ public class Client {
         try {
             if (socket.isConnected()) {
                 String stringEvent = event.getClass().getSimpleName();
-                System.out.println("Client sendet Event: " + stringEvent);
+                System.err.println("Client sendet Event: " + stringEvent);
                 this.upStream.writeUTF(stringEvent);
                 this.upStream.writeObject(event);
                 this.upStream.flush();
@@ -57,6 +55,9 @@ public class Client {
                 case "DisplayCakeResponseEvent":
                     controller.displayCakeHandler.handle(event);
                     break;
+                case "DisplayAllergenResponseEvent":
+                    controller.displayAllergenHandler.handle(event);
+                    break;
                 default:
                     System.out.println("Unknown event: " + type);
             }
@@ -67,24 +68,5 @@ public class Client {
         }
     }
 
-//    public void startReceiving() {
-//        new Thread(() -> {
-//            try {
-//                while (true) {
-//                    String type = downStream.readUTF();
-//                    CliEvent event = (CliEvent) this.downStream.readObject();
-//                    switch (type) {
-//                        case "HerstellerMapResponseEvent":
-//                            this.cliHandler.handle(event);
-//                            break;
-//                        default:
-//                            System.out.println("Unknown event: " + type);
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }).start();
-//    }
 
 }

@@ -10,6 +10,7 @@ import verwaltung.Hersteller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -33,6 +34,7 @@ public abstract class AbstractCake implements Kuchenprodukt, Serializable {
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
         this.preis = preis;
+        this.einfuegedatum = LocalDateTime.now();
 
     }
 
@@ -56,7 +58,16 @@ public abstract class AbstractCake implements Kuchenprodukt, Serializable {
 
     @Override
     public Duration getHaltbarkeit() {
-        return this.haltbarkeit;
+        if (this.haltbarkeit == null) {
+            return this.haltbarkeit;
+        }
+        LocalDateTime ablauf = this.einfuegedatum.plus(this.haltbarkeit);
+        LocalDateTime jetzt = LocalDateTime.now();
+        if (jetzt.isAfter(ablauf)) {
+            return Duration.ZERO; // Abgelaufen
+        }
+        return Duration.between(jetzt, ablauf);
+//        return this.haltbarkeit;
     }
 
     @Override
@@ -90,7 +101,8 @@ public abstract class AbstractCake implements Kuchenprodukt, Serializable {
         return this.einfuegedatum;
     }
 
-    protected void fillCommonFields(CakeDTO dto) {
+    protected CakeDTO toDTO() {
+        CakeDTO dto = new CakeDTO();
         dto.setKuchenTyp(this.getKuchenTyp().name());
 
         HerstellerDTO hDto = new HerstellerDTO();
@@ -105,13 +117,8 @@ public abstract class AbstractCake implements Kuchenprodukt, Serializable {
         dto.setFachnummer(this.fachnummer);
         if (inspektionsdatum != null)
             dto.setInspektionsdatum(inspektionsdatum.toInstant().toString());
-
-        dto.setEinfuegedatum(einfuegedatum.toString());
-    }
-
-    protected CakeDTO toDTO() {
-        CakeDTO dto = new CakeDTO();
-        fillCommonFields(dto);
+        if (einfuegedatum != null)
+            dto.setEinfuegedatum(einfuegedatum.toString());
         return dto;
     }
 }

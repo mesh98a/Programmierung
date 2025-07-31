@@ -2,40 +2,22 @@ import domainpackage.*;
 import observerpattern.Beobachter;
 import simulation2.InserterTask;
 import simulation2.RemoverTask;
-import simulation2.Simulation2Observer;
+import observers.Simulation2Observer;
 import verwaltung.Hersteller;
 import java.util.*;
 
 public class Simulation2 {
+    private static int capacity = 5;
+    private static int threads = 2;
     public static void main(String[] args) {
         int capacity = 5;
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Bitte Kapazität eingeben (oder Enter für Standard 5): ");
-
-        String input = scanner.nextLine();
-
-        if (!input.isBlank()) {
+        if (args.length > 0) {
             try {
-                capacity = Integer.parseInt(input);
-                if (capacity < 0) {
-                    System.out.println("Kapazität darf nicht negativ sein. Verwende Standardwert 5.");
-                    capacity = 5;
-                }
+                capacity = Integer.parseInt(args[0]);
+                threads = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                System.out.println("Ungültige Zahl! Verwende Standardwert 5.");
-                capacity = 5;
-            }
-        }
-
-        int n = 1;
-        System.out.print("Anzahl der Einfüge-/Lösch-Threads eingeben (Standard 1): ");
-        input = scanner.nextLine();
-        if (!input.isBlank()) {
-            try {
-                n = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Ungültige Zahl! Verwende Standardwert 1.");
+                System.out.println(e);
             }
         }
 
@@ -46,7 +28,7 @@ public class Simulation2 {
         automat.insertHersteller("Bäcker");
         Random random = new Random();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < threads; i++) {
             new InserterTask(automat, hersteller, random).start();
             new RemoverTask(automat,random).start();
         }

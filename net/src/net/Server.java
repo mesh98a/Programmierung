@@ -57,6 +57,14 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
+    public void sendMessage(Object message) {
+        try {
+            downStream.writeObject(message);
+            downStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void receive() throws IOException, ClassNotFoundException {
         String type = this.upStream.readUTF();

@@ -1,20 +1,11 @@
-package persistence;
+package io;
 
 import domainpackage.*;
-import kuchen.Allergen;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import verwaltung.Hersteller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.mockito.Mockito.*;
 

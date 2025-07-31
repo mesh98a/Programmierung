@@ -18,8 +18,6 @@ public class CakeDTO {
     public CakeDTO() {
     }
 
-    // Getter und Setter
-
     public HerstellerDTO getHerstellerDTO() {
         return hersteller;
     }
