@@ -8,7 +8,7 @@ public class DeleteCakeParser {
             this.fachnummer = Integer.parseInt(input);
             return true;
         } catch (NumberFormatException e) {
-            System.out.println("Input is not an integer");
+            System.out.println("Keine Zahl");
             return false;
         }
     }

@@ -10,12 +10,10 @@ import verwaltung.Hersteller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
 
-// https://link.springer.com/book/10.1007/978-3-662-66582-4
 public abstract class AbstractCake implements Kuchenprodukt, Serializable {
     static final long serialVersionUID = 1L;
     protected Hersteller hersteller;
@@ -64,10 +62,9 @@ public abstract class AbstractCake implements Kuchenprodukt, Serializable {
         LocalDateTime ablauf = this.einfuegedatum.plus(this.haltbarkeit);
         LocalDateTime jetzt = LocalDateTime.now();
         if (jetzt.isAfter(ablauf)) {
-            return Duration.ZERO; // Abgelaufen
+            return Duration.ZERO;
         }
         return Duration.between(jetzt, ablauf);
-//        return this.haltbarkeit;
     }
 
     @Override

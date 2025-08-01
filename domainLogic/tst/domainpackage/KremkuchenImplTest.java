@@ -3,7 +3,6 @@ package domainpackage;
 import domainpackage.dto.CakeDTO;
 import kuchen.Allergen;
 import kuchen.KuchenTyp;
-import kuchen.Obsttorte;
 import org.junit.jupiter.api.Test;
 import verwaltung.Hersteller;
 

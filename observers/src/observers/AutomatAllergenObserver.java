@@ -4,13 +4,12 @@ import domainpackage.Automat;
 import kuchen.Allergen;
 import observerpattern.Beobachter;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class AutomatAllergenObserver implements Beobachter{
-    private static final long serialVersionUID = 1L;
+
     private Automat observable;
     private Set<Allergen> letzteAllergene = new HashSet<>();
 

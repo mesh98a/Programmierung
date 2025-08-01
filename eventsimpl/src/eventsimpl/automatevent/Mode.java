@@ -19,9 +19,11 @@ public enum Mode {
     Mode(Class<? extends AutomatEvent> eventClass) {
         this.eventClass = eventClass;
     }
+
     public Class<? extends AutomatEvent> getEventClass() {
         return eventClass;
     }
+
     public static Mode fromEventClassName(String className) {
         for (Mode mode : values()) {
             if (mode.eventClass.getSimpleName().equals(className)) {

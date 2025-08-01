@@ -3,7 +3,6 @@ package domainpackage;
 import domainpackage.dto.AutomatDTO;
 import kuchen.*;
 import observerpattern.Beobachter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import verwaltung.Hersteller;
 
@@ -619,7 +618,6 @@ class AutomatTest {
     }
     @Test
     void copyFromNull(){
-        Automat aut = new Automat(3);
 
         Automat newAutomat = new Automat(4);
         newAutomat.copyFrom(null);

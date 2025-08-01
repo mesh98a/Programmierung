@@ -59,7 +59,7 @@ public class Client {
                     controller.displayAllergenHandler.handle(event);
                     break;
                 default:
-                    System.out.println("Unknown event: " + type);
+                    System.out.println("Unbekannter Event-Typ: " + type);
             }
         } catch (IOException e) {
             e.printStackTrace();

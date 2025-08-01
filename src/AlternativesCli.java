@@ -11,9 +11,9 @@ import observers.AutomatAllergenObserver;
 import observers.AutomatCapacityObserver;
 
 public class AlternativesCli {
+    private static int capacity = 5;
     public static void main(String[] args) {
 
-        int capacity = 5;
         if (args.length > 0) {
             try {
                 capacity = Integer.parseInt(args[0]);

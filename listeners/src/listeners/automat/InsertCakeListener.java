@@ -7,13 +7,10 @@ import kuchen.KuchenTyp;
 import domainpackage.CakeFactory;
 import eventsimpl.automatevent.InsertCakeEvent;
 import eventsystem.automatsystem.AutomatEventListener;
-import kuchen.Kuchenprodukt;
 import verwaltung.Hersteller;
 
 public class InsertCakeListener implements AutomatEventListener<InsertCakeEvent> {
     private final Automat automat;
-    private AbstractCake cake;
-    private CakeFactory cakeFactory;
 
     public InsertCakeListener(Automat automat) {
         this.automat = automat;

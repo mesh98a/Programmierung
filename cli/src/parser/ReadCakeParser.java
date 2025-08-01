@@ -13,7 +13,7 @@ public class ReadCakeParser {
             }
             return true;
         } catch (Exception e) {
-            System.out.println("Fehler beim Parseen der KuchenTyp " + e);
+            System.out.println("Fehler beim Parsen: " + e);
             return false;
         }
     }

@@ -17,7 +17,7 @@ public class InserterTask extends Thread {
     private final Automat automat;
     private final Hersteller hersteller;
     private Random random;
-//    private RandomCake randomCake;
+
 
     public InserterTask(Automat automat, Hersteller hersteller, Random random) {
         this.automat = automat;
@@ -41,11 +41,11 @@ public class InserterTask extends Thread {
 
     public AbstractCake createRandomCake(Hersteller hersteller,Random random) {
         Set<Allergen> allergene = getRandomAllergens(random);
-        int naehrwert = 200 + random.nextInt(301); // 200–500 kcal
-        Duration haltbarkeit = Duration.ofHours(24 + random.nextInt(72)); // 1–4 Tage
-        BigDecimal preis = BigDecimal.valueOf(5 + random.nextDouble() * 10); // 5–15 Euro
+        int naehrwert = 200 + random.nextInt(301);
+        Duration haltbarkeit = Duration.ofHours(24 + random.nextInt(72));
+        BigDecimal preis = BigDecimal.valueOf(5 + random.nextDouble() * 10);
 
-        int type = random.nextInt(2); // 0 = OBSTKUCHEN, 1 = KREMKUCHEN
+        int type = random.nextInt(2);
 
         if (type == 0) {
             String[] obstsorten = {"Apfel", "Kirsche", "Pfirsich", "Erdbeere"};
@@ -53,10 +53,10 @@ public class InserterTask extends Thread {
 
             return new ObstkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, obstsorte);
         } else {
-            String[] kremarten = {"Vanille", "Schoko", "Nougat", "Karamell"};
-            String kremArt = kremarten[random.nextInt(kremarten.length)];
+            String[] kremsorten = {"Vanille", "Schoko", "Nougat", "Karamell"};
+            String kremsorte = kremsorten[random.nextInt(kremsorten.length)];
 
-            return new KremkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, kremArt);
+            return new KremkuchenImpl(hersteller, preis, naehrwert, haltbarkeit, allergene, kremsorte);
         }
     }
 

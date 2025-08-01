@@ -7,7 +7,6 @@ import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;

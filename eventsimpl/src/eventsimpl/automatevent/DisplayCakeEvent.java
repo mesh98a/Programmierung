@@ -1,7 +1,6 @@
 package eventsimpl.automatevent;
 
 import eventsystem.automatsystem.AutomatEvent;
-import kuchen.KuchenTyp;
 
 public class DisplayCakeEvent extends AutomatEvent {
     private final String kuchenTyp;

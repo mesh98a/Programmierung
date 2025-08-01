@@ -23,32 +23,17 @@ public class InsertCommand implements Command {
             String[] parts = command.split(" ");
 
             if (parts.length == 1) {
-               insertHersteller(parts,handlers);
+                insertHersteller(parts, handlers);
 
             } else if (parts.length == 7 || parts.length == 8) {
                 insertCake(parts, handlers);
-//                InsertCakeParser k = new InsertCakeParser();
-//                if (k.parse(parts)) {
-//                    AutomatEvent kevent = new InsertCakeEvent(
-//                            this,
-//                            k.getKuchentyp(),
-//                            k.getHerstellerName(),
-//                            k.getPreis(),
-//                            k.getNaehrwert(),
-//                            k.getHaltbarkeit(),
-//                            k.getAllergene(),
-//                            k.getKuchensorten()
-//                    );
-//                    AutomatEventHandler insertCakeHandler = handlers.get(Mode.INSERT_CAKE);
-//                    if (insertCakeHandler != null) {
-//                        insertCakeHandler.handle(kevent);
-//                    }
 
             } else {
                 System.out.println("Fehler: Ungültige Anzahl an Tokens (" + parts.length + ")");
             }
         }
     }
+
     public void insertHersteller(String[] parts, Map<Mode, AutomatEventHandler> handlers) {
         AutomatEvent hevent = new InsertHerstellerEvent(this, parts[0]);
         AutomatEventHandler herstellerHandler = handlers.get(Mode.INSERT_HERSTELLER);

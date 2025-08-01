@@ -20,12 +20,10 @@ import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class ViewModel {
-    public Button save_button;
-    public Button load_button;
+
     private Automat automat;
 
     @FXML
@@ -86,19 +84,25 @@ public class ViewModel {
     private TextField input_fachnummer;
 
     @FXML
-    private Button insert_button;
+    public Button insert_button;
 
     @FXML
-    private Button read_button;
+    public Button read_button;
 
     @FXML
-    private Button update_button;
+    public Button update_button;
 
     @FXML
-    private Button delete_button;
+    public Button delete_button;
 
     @FXML
-    private Button clear_button;
+    public Button clear_button;
+
+    @FXML
+    public Button save_button;
+
+    @FXML
+    public Button load_button;
 
     private ObservableList<HerstellerStatistik> herstellerListe = FXCollections.observableArrayList();
     private ObservableList<CakeStatistik> cakeListe = FXCollections.observableArrayList();
@@ -298,7 +302,6 @@ public class ViewModel {
     }
 
 
-    // clearbutton
     public void clearFields() {
         input_hersteller.clear();
         input_extras.clear();
@@ -308,6 +311,7 @@ public class ViewModel {
         input_preis.clear();
         input_kuchentyp.getSelectionModel().clearSelection();
         input_allergene.getSelectionModel().clearSelection();
+        input_typ.getSelectionModel().clearSelection();
     }
 
     public void comboAllergen() {

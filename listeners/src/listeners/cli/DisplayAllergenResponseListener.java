@@ -1,8 +1,6 @@
 package listeners.cli;
 
-import eventsimpl.automatevent.DisplayAllergenEvent;
 import eventsimpl.clievent.DisplayAllergenResponseEvent;
-import eventsimpl.clievent.DisplayCakeResponseEvent;
 import eventsystem.clisystem.CliEventListener;
 import kuchen.Allergen;
 

@@ -1,7 +1,6 @@
 package observers;
 
 import domainpackage.Automat;
-import net.Server;
 import observerpattern.Beobachter;
 
 
@@ -18,9 +17,11 @@ public class AutomatCapacityObserver implements Beobachter {
     public void update() {
         int belegtePlaetze = observable.getListCake().size();
         int kapazitaet = observable.getCapacity();
-        double auslastung = (double) belegtePlaetze / kapazitaet;
-        if (auslastung > 0.9) {
-            System.out.println("Kapazität über 90%");
+        if (kapazitaet != 0) {
+            double auslastung =  belegtePlaetze / (kapazitaet * 1.0);
+            if (auslastung > 0.9) {
+                System.out.println("Kapazität über 90%");
+            }
         }
     }
 

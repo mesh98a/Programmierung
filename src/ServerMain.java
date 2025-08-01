@@ -4,8 +4,6 @@ import eventsystem.automatsystem.AutomatEventHandler;
 import eventsimpl.automatevent.Mode;
 import eventsystem.clisystem.CliEventHandler;
 import listeners.automat.*;
-import listeners.net.ClientListener;
-import listeners.net.ClientRequestListener;
 import listeners.net.ServerListener;
 import net.Server;
 import observers.*;

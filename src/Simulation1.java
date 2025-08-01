@@ -5,7 +5,6 @@ import simulation1.Remover;
 import verwaltung.Hersteller;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class Simulation1 {
     private static int capacity = 5;

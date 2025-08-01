@@ -13,15 +13,14 @@ import java.util.Random;
 import java.util.Set;
 
 public class RandomCake {
-    //private static Random random = new Random();
 
-    public static AbstractCake createRandomCake(Hersteller hersteller,Random random) {
+    public static AbstractCake createRandomCake(Hersteller hersteller, Random random) {
         Set<Allergen> allergene = getRandomAllergens(random);
-        int naehrwert = 200 + random.nextInt(301); // 200–500 kcal
-        Duration haltbarkeit = Duration.ofHours(24 + random.nextInt(72)); // 1–4 Tage
-        BigDecimal preis = BigDecimal.valueOf(5 + random.nextDouble() * 10); // 5–15 Euro
+        int naehrwert = 200 + random.nextInt(301);
+        Duration haltbarkeit = Duration.ofHours(24 + random.nextInt(72));
+        BigDecimal preis = BigDecimal.valueOf(5 + random.nextDouble() * 10);
 
-        int type = random.nextInt(2); // 0 = OBSTKUCHEN, 1 = KREMKUCHEN
+        int type = random.nextInt(2);
 
         if (type == 0) {
             String[] obstsorten = {"Apfel", "Kirsche", "Pfirsich", "Erdbeere"};
@@ -47,5 +46,5 @@ public class RandomCake {
 
         return allergens;
     }
-    }
+}
 

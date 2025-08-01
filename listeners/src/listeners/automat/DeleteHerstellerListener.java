@@ -4,7 +4,6 @@ import domainpackage.Automat;
 import eventsimpl.automatevent.DeleteHerstellerEvent;
 import eventsystem.automatsystem.AutomatEventListener;
 
-import java.awt.event.ActionListener;
 
 public class DeleteHerstellerListener implements AutomatEventListener<DeleteHerstellerEvent> {
     private final Automat automat;

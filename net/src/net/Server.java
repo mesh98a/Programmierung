@@ -18,7 +18,6 @@ public class Server implements Runnable {
     private final ObjectInputStream upStream;
     private final ObjectOutputStream downStream;
     private final Map<Mode, AutomatEventHandler> handlers = new EnumMap<>(Mode.class);
-//    private final AutomatEventHandler handler;
 
     public Server(Socket socket, Automat automat) throws IOException {
         this.automat = automat;
@@ -53,14 +52,6 @@ public class Server implements Runnable {
                 this.downStream.writeObject(event);
                 this.downStream.flush();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void sendMessage(Object message) {
-        try {
-            downStream.writeObject(message);
-            downStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-// --module-path /Users/arturmeshalkin/Downloads/javafx-sdk-21.0.7/lib --add-modules javafx.controls,javafx.fxml
 public class GUI extends Application {
     private Stage primaryStage;
 

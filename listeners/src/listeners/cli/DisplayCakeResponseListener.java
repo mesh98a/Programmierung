@@ -11,7 +11,7 @@ public class DisplayCakeResponseListener implements CliEventListener<DisplayCake
     @Override
     public void onCliEvent(DisplayCakeResponseEvent event) {
         for( Kuchenprodukt cake : event.getCakeList()){
-//
+
             System.out.print(
                     "Kuchentyp: " + cake.getKuchenTyp() +
                     " Fachnummer: " + cake.getFachnummer() +

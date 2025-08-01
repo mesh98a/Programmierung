@@ -4,7 +4,6 @@ package domainpackage;
 import domainpackage.dto.CakeDTO;
 import kuchen.Allergen;
 import kuchen.KuchenTyp;
-import kuchen.Kuchenprodukt;
 import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
