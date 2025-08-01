@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="21.0.4" class="java.beans.XMLDecoder">
+ <object class="domainpackage.dto.AutomatDTO">
+  <void property="allergene">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <string>Gluten</string>
+    </void>
+   </object>
+  </void>
+  <void property="cakes">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="domainpackage.dto.CakeDTO">
+      <void property="allergene">
+       <object class="java.util.ArrayList">
+        <void method="add">
+         <string>Gluten</string>
+        </void>
+       </object>
+      </void>
+      <void property="einfuegedatum">
+       <string>2025-07-30T12:33:24.150144</string>
+      </void>
+      <void property="extras">
+       <object class="java.util.ArrayList">
+        <void method="add">
+         <string>a</string>
+        </void>
+       </object>
+      </void>
+      <void property="fachnummer">
+       <int>0</int>
+      </void>
+      <void property="haltbarkeit">
+       <long>122400</long>
+      </void>
+      <void property="herstellerDTO">
+       <object class="domainpackage.dto.HerstellerDTO">
+        <void property="name">
+         <string>Sonne</string>
+        </void>
+       </object>
+      </void>
+      <void property="kuchenTyp">
+       <string>OBSTKUCHEN</string>
+      </void>
+      <void property="naehrwert">
+       <int>23</int>
+      </void>
+      <void property="preis">
+       <string>12</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="capacity">
+   <int>5</int>
+  </void>
+  <void property="herstellerListe">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="domainpackage.dto.HerstellerMapDTO">
+      <void property="anzahl">
+       <int>1</int>
+      </void>
+      <void property="hersteller">
+       <object class="domainpackage.dto.HerstellerDTO">
+        <void property="name">
+         <string>Sonne</string>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
